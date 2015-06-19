@@ -166,7 +166,19 @@ class clsDBConn extends DB_Adapter
         parent::Initialize();
         $this->DateLeftDelimiter = "'";
         $this->DateRightDelimiter = "'";
-        $this->query("ALTER SESSION SET NLS_DATE_FORMAT = 'YYYY-MM-DD HH24:MI:SS'");
+        //$this->query("ALTER SESSION SET NLS_DATE_FORMAT = 'YYYY-MM-DD HH24:MI:SS'");
+    }
+    
+    function OptimizeSQL($SQL)
+    {
+        $PageSize = (int) $this->PageSize;
+        if (!$PageSize) return $SQL;
+        $Page = $this->AbsolutePage ? (int) $this->AbsolutePage : 1;
+        if (strcmp($this->RecordsCount, "CCS not counted")) 
+            $SQL .= (" LIMIT " . $PageSize . " OFFSET " . (($Page - 1) * $PageSize));
+        else
+            $SQL .= (" LIMIT " . ($PageSize + 1) . " OFFSET " . (($Page - 1) * $PageSize));
+        return $SQL;
     }
 
 }

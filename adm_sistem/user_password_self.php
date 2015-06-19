@@ -332,7 +332,7 @@ class clsp_app_userDataSource extends clsDBConn {  //p_app_userDataSource Class 
     }
 //End DataSourceClass_Initialize Event
 
-//Prepare Method @2-25C5C4F4
+//Prepare Method @2-FD3A6625
     function Prepare()
     {
         global $CCSLocales;
@@ -340,18 +340,17 @@ class clsp_app_userDataSource extends clsDBConn {  //p_app_userDataSource Class 
         $this->wp = new clsSQLParameters($this->ErrorBlock);
         $this->wp->AddParameter("1", "sesUserID", ccsFloat, "", "", $this->Parameters["sesUserID"], "", false);
         $this->AllParametersSet = $this->wp->AllParamsSet();
-        $this->wp->Criterion[1] = $this->wp->Operation(opEqual, "P_USER_ID", $this->wp->GetDBValue("1"), $this->ToSQL($this->wp->GetDBValue("1"), ccsFloat),false);
-        $this->Where = 
-             $this->wp->Criterion[1];
     }
 //End Prepare Method
 
-//Open Method @2-48F29A2B
+//Open Method @2-97FFFF51
     function Open()
     {
         $this->CCSEventResult = CCGetEvent($this->CCSEvents, "BeforeBuildSelect", $this->Parent);
-        $this->SQL = "SELECT * \n\n" .
-        "FROM P_USER {SQL_Where} {SQL_OrderBy}";
+        $this->SQL = "SELECT * \n" .
+        "FROM p_user\n" .
+        "WHERE p_user_id = " . $this->SQLValue($this->wp->GetDBValue("1"), ccsFloat) . " ";
+        $this->Order = "";
         $this->CCSEventResult = CCGetEvent($this->CCSEvents, "BeforeExecuteSelect", $this->Parent);
         $this->query(CCBuildSQL($this->SQL, $this->Where, $this->Order));
         $this->CCSEventResult = CCGetEvent($this->CCSEvents, "AfterExecuteSelect", $this->Parent);
@@ -360,12 +359,12 @@ class clsp_app_userDataSource extends clsDBConn {  //p_app_userDataSource Class 
 
 
 
-//SetValues Method @2-96900B12
+//SetValues Method @2-CA247CAB
     function SetValues()
     {
-        $this->user_name->SetDBValue($this->f("USER_NAME"));
-        $this->user_id->SetDBValue(trim($this->f("P_USER_ID")));
-        $this->user_pwd->SetDBValue($this->f("USER_PWD"));
+        $this->user_name->SetDBValue($this->f("user_name"));
+        $this->user_id->SetDBValue(trim($this->f("p_user_id")));
+        $this->user_pwd->SetDBValue($this->f("user_pwd"));
     }
 //End SetValues Method
 
@@ -393,10 +392,10 @@ class clsp_app_userDataSource extends clsDBConn {  //p_app_userDataSource Class 
             $this->cp["password2"]->SetValue($this->password2->GetValue(true));
         if (!is_null($this->cp["user_pwd"]->GetValue()) and !strlen($this->cp["user_pwd"]->GetText()) and !is_bool($this->cp["user_pwd"]->GetValue())) 
             $this->cp["user_pwd"]->SetValue($this->user_pwd->GetValue(true));
-		if( strtoupper(md5($this->SQLValue($this->cp["old_pass"]->GetDBValue(), ccsText))) == $this->SQLValue($this->cp["user_pwd"]->GetDBValue(), ccsText) ) {
+		if( md5($this->SQLValue($this->cp["old_pass"]->GetDBValue(), ccsText)) == $this->SQLValue($this->cp["user_pwd"]->GetDBValue(), ccsText) ) {
 			if($this->SQLValue($this->cp["password1"]->GetDBValue(), ccsText)==$this->SQLValue($this->cp["password2"]->GetDBValue(), ccsText)){
 
-        $this->SQL = "UPDATE P_USER SET user_pwd=UPPER('" . md5($this->SQLValue($this->cp["password1"]->GetDBValue(), ccsText)) . "') WHERE  P_USER_ID = " . $this->SQLValue($this->cp["user_id"]->GetDBValue(), ccsFloat) . "";
+        $this->SQL = "UPDATE P_USER SET user_pwd = '" . md5($this->SQLValue($this->cp["password1"]->GetDBValue(), ccsText)) . "' WHERE  P_USER_ID = " . $this->SQLValue($this->cp["user_id"]->GetDBValue(), ccsFloat) . "";
         $this->CCSEventResult = CCGetEvent($this->CCSEvents, "BeforeExecuteUpdate", $this->Parent);
         if($this->Errors->Count() == 0 && $this->CmdExecution) {
             $this->query($this->SQL);
