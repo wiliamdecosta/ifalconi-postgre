@@ -263,23 +263,14 @@ class clsModulGridDataSource extends clsDBConn {  //ModulGridDataSource Class @2
         }
         $dbConn__->close();
 
-if ($isadmin==1) {
-        $this->SQL = "select aa.p_application_id, aa.code, aa.description, 1 is_on, aa.md_on " .
-                     "from v_display_app aa " .
-                     "order by nvl(aa.listing_no,9999) ";
-} else {             
-        $this->SQL = "select   aa.p_application_id, aa.code, aa.description, " .
-                     "decode (nvl (bb.p_application_id, 0), 0, 0, 1) is_on, " .
-                     "decode (nvl (bb.p_application_id, 0), 0, aa.md_off, aa.md_on) md_on " .
-                     "from   v_display_app aa, (  select   a.p_application_id " .
-                     "from   p_application_role a, p_role b, p_user_role c " .
-                     "where   a.p_role_id = b.p_role_id and c.p_role_id = b.p_role_id  " .
-                     "and b.is_active='Y' and c.p_user_id = " . ccgetuserid() . " " .
-                     "group by   a.p_application_id) bb " .
-                     "where   aa.p_application_id = bb.p_application_id(+) " .
-                     "order by   nvl (aa.listing_no, 9999) ";
-                     
-}             
+		if ($isadmin==1) {
+			  $this->SQL = "select aa.p_application_id, aa.code, aa.description, 1 is_on, aa.md_on " .
+							 "from ifl.v_display_app(1,0.0) aa ";
+		} else {             
+
+			  $this->SQL = "select aa.p_application_id, aa.code, aa.description, 1 is_on, aa.md_on " .
+							 "from ifl.v_display_app(0," . ccgetuserid() . " ) aa "; 
+		}             
 
         $this->CountSQL = "SELECT COUNT(*) FROM (" . $this->SQL . ")";
         

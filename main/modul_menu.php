@@ -159,28 +159,17 @@ var tree_tpl = {
 			<span id="menu_1>" style="font-size: 9pt; text-align:left; background-color: #89a5f7; border-top: 0px solid #0969B0; border-left: 0px solid #0969B0; border-bottom: 0px solid #7EB5F1; border-right: 0px solid #7EB5F1">
 <?php
 
-if ($isadmin==1) {
-	$queryMenu = "select p_menu_id as p_menu_id, nvl (parent_id, 0) parent_id, menu menu, file_name, description, listing_no "
-			."from (select p_menu_id, parent_id, code as menu, nvl (file_name, '-') as file_name,"
-			."	description, listing_no "
-			."	from p_menu "
-			."	where is_active = 'Y' "
-			."	and p_application_id = ".$p_application_id." "
-			." start with parent_id is null connect by prior p_menu_id = parent_id order siblings by nvl(listing_no, 9999))";
+if ($isadmin==1) { 
+	$queryMenu = "select p_menu_id, parent_id, menu, file_name, description, listing_no from ifl.f_display_menu_tree(".$p_application_id.") a";			 
 } else {    
-	$queryMenu = "select p_menu_id as p_menu_id, nvl (parent_id, 0) parent_id, menu menu, file_name, description, listing_no "
-			."from (select p_menu_id, parent_id, code as menu, nvl (file_name, '-') as file_name,"
-			."	description, listing_no "
-			."	from p_menu "
-			."	where is_active = 'Y' "
-			."	and p_application_id = ".$p_application_id." "
-			."	and p_menu_id in ( "
-			."	select rm.p_menu_id "
-			."	from p_role_menu rm, p_user_role ur, p_user u "
-			."	where rm.p_role_id = ur.p_role_id "
-			."	and ur.p_user_id = u.p_user_id "
-			."	and ur.p_user_id = " . CCGetUserID() . ") "
-			." start with parent_id is null connect by prior p_menu_id = parent_id order siblings by nvl(listing_no, 9999))";
+
+	$queryMenu = "select p_menu_id, parent_id, menu, file_name, description, listing_no from ifl.f_display_menu_tree(".$p_application_id.") a " 
+				." where a.p_menu_id in ( "
+				."	select rm.p_menu_id "
+				."	from ifl.p_role_menu rm, ifl.p_user_role ur, ifl.p_user u "
+				."	where rm.p_role_id = ur.p_role_id "
+				."	and ur.p_user_id = u.p_user_id "
+				."	and ur.p_user_id = " . CCGetUserID() . ") ";
 }			
 			
 // die($queryMenu);
