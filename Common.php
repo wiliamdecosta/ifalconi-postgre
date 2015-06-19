@@ -1,5 +1,5 @@
 <?php
-
+error_reporting((E_ALL ^ E_DEPRECATED ^ E_WARNING) & ~E_NOTICE);
 //Include Files @0-ED610940
 include(RelativePath . "/Classes.php");
 include(RelativePath . "/db_adapter.php");
@@ -29,11 +29,11 @@ switch ($CONN_TO)
   case "2":  
     $CCConnectionSettings = array (
         "Conn" => array(
-            "Type" => "Oracle",
-            "DBLib" => "OracleOCI",
-            "Database" => "127.0.0.1:1521/ORCL",
-            "Host" => "127.0.0.1",
-            "Port" => "1521",
+            "Type" => "PostgreSQL",
+            "DBLib" => "PostgreSQL",
+            "Database" => "ifc_db",
+            "Host" => "192.168.1.101",
+            "Port" => "5444",
             "User" => "ifc",
             "Password" => "ifc",
             "Persistent" => false,
@@ -46,11 +46,11 @@ switch ($CONN_TO)
   case "3":  
     $CCConnectionSettings = array (
         "Conn" => array(
-            "Type" => "Oracle",
-            "DBLib" => "OracleOCI",
-            "Database" => "127.0.0.1:1521/ORCL",
-            "Host" => "127.0.0.1",
-            "Port" => "1521",
+            "Type" => "PostgreSQL",
+            "DBLib" => "PostgreSQL",
+            "Database" => "ifb_db",
+            "Host" => "192.168.1.101",
+            "Port" => "5444",
             "User" => "ifb",
             "Password" => "ifb",
             "Persistent" => false,
@@ -63,11 +63,11 @@ switch ($CONN_TO)
   case "4":  
     $CCConnectionSettings = array (
         "Conn" => array(
-            "Type" => "Oracle",
-            "DBLib" => "OracleOCI",
-            "Database" => "127.0.0.1:1521/ORCL",
-            "Host" => "127.0.0.1",
-            "Port" => "1521",
+            "Type" => "PostgreSQL",
+            "DBLib" => "PostgreSQL",
+            "Database" => "ifp_db",
+            "Host" => "192.168.1.101",
+            "Port" => "5444",
             "User" => "ifp",
             "Password" => "ifp",
             "Persistent" => false,
@@ -80,10 +80,10 @@ switch ($CONN_TO)
   default :
     $CCConnectionSettings = array (
         "Conn" => array(
-            "Type" => "Oracle",
-            "DBLib" => "OracleOCI",
-            "Database" => "127.0.0.1:1521/ORCL",
-            "Host" => "127.0.0.1",
+            "Type" => "PostgreSQL",
+            "DBLib" => "PostgreSQL",
+            "Database" => "ifl_db",
+            "Host" => "192.168.1.101",
             "Port" => "1521",
             "User" => "ifl",
             "Password" => "ifl",
@@ -1982,13 +1982,13 @@ function CCLoginUser($login, $password)
 {
     CCLogoutUser();
     $db = new clsDBConn();
-    $SQL = "SELECT P_USER_ID, USER_PWD FROM P_USER WHERE USER_NAME=" . $db->ToSQL($login, ccsText) . " AND UPPER(USER_PWD)=UPPER(" . $db->ToSQL($password, ccsText) . ")";
+    $SQL = "SELECT p_user_id, user_pwd FROM p_user WHERE user_name=" . $db->ToSQL($login, ccsText) . " AND UPPER(user_pwd)=UPPER(" . $db->ToSQL($password, ccsText) . ")";
     $db->query($SQL);
     $Result = $db->next_record();
     if ($Result) {
-        CCSetSession("UserID", $db->f("P_USER_ID"));
+        CCSetSession("UserID", $db->f("p_user_id"));
         CCSetSession("UserName", $login);
-        CCSetSession("GroupID", $db->f("P_USER_ID"));
+        CCSetSession("GroupID", $db->f("p_user_id"));
         CCSetSession("AppName", "CCBS");
     }
     return $Result;
