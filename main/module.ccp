@@ -1,8 +1,8 @@
 <Page id="1" templateExtension="html" relativePath=".." fullRelativePath=".\main" secured="False" urlType="Relative" isIncluded="False" SSLAccess="False" isService="False" cachingEnabled="False" cachingDuration="1 minutes" wizardTheme="hms" wizardThemeVersion="3.0" needGeneration="0">
 	<Components>
-		<Grid id="2" secured="False" sourceType="SQL" returnValueType="Number" defaultPageSize="25" connection="TRBConn" activeCollection="TableParameters" parameterTypeListName="ParameterTypeList" name="ModulGrid" pageSizeLimit="100" wizardCaption=" Grid1 Gallery" wizardGridType="Gallery" wizardAllowInsert="False" wizardAltRecord="False" wizardAltRecordType="Style" wizardRecordSeparator="False" wizardNoRecords="-" numberOfColumns="5" rowsPerPage="5" recordsNumber="25" dataSource="SELECT * 
+		<Grid id="2" secured="False" sourceType="SQL" returnValueType="Number" defaultPageSize="25" connection="Conn" activeCollection="TableParameters" parameterTypeListName="ParameterTypeList" name="ModulGrid" pageSizeLimit="100" wizardCaption=" Grid1 Gallery" wizardGridType="Gallery" wizardAllowInsert="False" wizardAltRecord="False" wizardAltRecordType="Style" wizardRecordSeparator="False" wizardNoRecords="-" numberOfColumns="5" rowsPerPage="5" recordsNumber="25" dataSource="SELECT * 
 FROM v_display_app 
-ORDER BY NVL(LISTING_NO,999)" orderBy="LISTING_NO">
+ORDER BY coalesce(LISTING_NO,999)" orderBy="LISTING_NO">
 			<Components>
 				<Panel id="6" visible="True" name="RowOpenTag">
 					<Components/>
