@@ -35,7 +35,7 @@ switch ($CONN_TO)
             "Host" => "192.168.1.101",
             "Port" => "5444",
             "User" => "ifc",
-            "Password" => "ifc",
+            "Password" => "ifc123",
             "Persistent" => false,
             "DateFormat" => array("yyyy", "-", "mm", "-", "dd", " ", "HH", ":", "nn", ":", "ss"),
             "BooleanFormat" => array(1, 0, ""),
@@ -52,7 +52,7 @@ switch ($CONN_TO)
             "Host" => "192.168.1.101",
             "Port" => "5444",
             "User" => "ifb",
-            "Password" => "ifb",
+            "Password" => "ifb123",
             "Persistent" => false,
             "DateFormat" => array("yyyy", "-", "mm", "-", "dd", " ", "HH", ":", "nn", ":", "ss"),
             "BooleanFormat" => array(1, 0, ""),
@@ -69,7 +69,7 @@ switch ($CONN_TO)
             "Host" => "192.168.1.101",
             "Port" => "5444",
             "User" => "ifp",
-            "Password" => "ifp",
+            "Password" => "ifp123",
             "Persistent" => false,
             "DateFormat" => array("yyyy", "-", "mm", "-", "dd", " ", "HH", ":", "nn", ":", "ss"),
             "BooleanFormat" => array(1, 0, ""),
@@ -84,9 +84,9 @@ switch ($CONN_TO)
             "DBLib" => "PostgreSQL",
             "Database" => "ifl_db",
             "Host" => "192.168.1.101",
-            "Port" => "1521",
+            "Port" => "5444",
             "User" => "ifl",
-            "Password" => "ifl",
+            "Password" => "ifl123",
             "Persistent" => false,
             "DateFormat" => array("yyyy", "-", "mm", "-", "dd", " ", "HH", ":", "nn", ":", "ss"),
             "BooleanFormat" => array(1, 0, ""),
@@ -1982,7 +1982,7 @@ function CCLoginUser($login, $password)
 {
     CCLogoutUser();
     $db = new clsDBConn();
-    $SQL = "SELECT p_user_id, user_pwd FROM p_user WHERE user_name=" . $db->ToSQL($login, ccsText) . " AND UPPER(user_pwd)=UPPER(" . $db->ToSQL($password, ccsText) . ")";
+    $SQL = "SELECT p_user_id, user_pwd FROM p_user WHERE user_name=" . $db->ToSQL($login, ccsText) . " AND user_pwd = " . $db->ToSQL($password, ccsText) . "";
     $db->query($SQL);
     $Result = $db->next_record();
     if ($Result) {
