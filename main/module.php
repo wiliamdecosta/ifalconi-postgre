@@ -265,14 +265,14 @@ class clsModulGridDataSource extends clsDBConn {  //ModulGridDataSource Class @2
 
 		if ($isadmin==1) {
 			  $this->SQL = "select aa.p_application_id, aa.code, aa.description, 1 is_on, aa.md_on " .
-							 "from ifl.v_display_app(1,0.0) aa ";
+							 "from v_display_app(1,0.0) aa ";
 		} else {             
 
 			  $this->SQL = "select aa.p_application_id, aa.code, aa.description, 1 is_on, aa.md_on " .
-							 "from ifl.v_display_app(0," . ccgetuserid() . " ) aa "; 
+							 "from v_display_app(0," . ccgetuserid() . " ) aa "; 
 		}             
 
-        $this->CountSQL = "SELECT COUNT(*) FROM (" . $this->SQL . ")";
+        $this->CountSQL = "SELECT COUNT(*) FROM (" . $this->SQL . ") a ";
         
         $this->CCSEventResult = CCGetEvent($this->CCSEvents, "BeforeExecuteSelect", $this->Parent);
         if ($this->CountSQL) 

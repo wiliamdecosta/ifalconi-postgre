@@ -160,13 +160,13 @@ var tree_tpl = {
 <?php
 
 if ($isadmin==1) { 
-	$queryMenu = "select p_menu_id, parent_id, menu, file_name, description, listing_no from ifl.f_display_menu_tree(".$p_application_id.") a";			 
+	$queryMenu = "select p_menu_id, parent_id, menu, file_name, description, listing_no from f_display_menu_tree(".$p_application_id.") a";			 
 } else {    
 
-	$queryMenu = "select p_menu_id, parent_id, menu, file_name, description, listing_no from ifl.f_display_menu_tree(".$p_application_id.") a " 
+	$queryMenu = "select p_menu_id, parent_id, menu, file_name, description, listing_no from f_display_menu_tree(".$p_application_id.") a " 
 				." where a.p_menu_id in ( "
 				."	select rm.p_menu_id "
-				."	from ifl.p_role_menu rm, ifl.p_user_role ur, ifl.p_user u "
+				."	from p_role_menu rm, p_user_role ur, p_user u "
 				."	where rm.p_role_id = ur.p_role_id "
 				."	and ur.p_user_id = u.p_user_id "
 				."	and ur.p_user_id = " . CCGetUserID() . ") ";
