@@ -63,12 +63,12 @@
 	<Styles>
 		<Style id="5" name="trb" caption="trb"/>
 		<Style id="8" name="Basic" caption="Basic"/>
-</Styles>
+	</Styles>
 	<CustomButtons/>
 	<Profiles>
 		<Profile name="Server1" FTPPassiveMode="True" FTPSecureConnection="False" FTPpublishingAllMask="html;js;asp;php;jsp;cfm;pl;pm;cgi;mdb;gif;jpg;css;xml;java;ascx;aspx;cs;vb;vbproj;resx;config;vsdisco;csproj;webinfo;bat;tld;jar;properties;inc;txt;resources;swf" FTPpublishingExceptMask="ccs;ccp" FTPpublishingType="Project" fileExtension=".php" location="Local" publishingAllMask="html;js;asp;php;jsp;cfm;cfc;pl;pm;cgi;mdb;gif;jpg;png;css;xml;java;asax;ascx;aspx;asmx;cs;vb;vbproj;resx;config;vsdisco;csproj;webinfo;bat;tld;jar;properties;inc;txt;resources;swf" publishingExceptMask="ccs;ccp" publishingType="Project" FTPFolder="" FTPLogin="" FTPPassword="" FTPServer="" FTPServerURL="" __specValue="" localServerPath="C:\Inetpub\wwwroot\ihms" localServerURL="http://localhost/ihms">
 			<Connections connection="Conn">
-				<Connection id="2" serverDatabase="PostgreSQL" DBNameUppercase="True" OptimizeSQL="False" PHPDBLib="PostgreSQL" database="PostgreSQL" showViews="True" showSynonyms="True" showSysTable="False" showSysView="False" showAliases="False" relationshipDiscovery="True" serverPersistentConnection="False" serverUseODBCCursor="0" connectionType="ODBC" connectionString="IFP_IFALCONI" name="Conn" login="ifp" password="ifp123" schema="ifp" DBDateFormat="yyyy-mm-dd HH:nn:ss" DBBooleanFormat="t;f" serverHost="192.168.1.101" serverPort="5444" serverLogin="ifp" serverPassword="ifp123" serverDatabaseName="ifp_db" connection="Conn"/>
+				<Connection id="2" serverDatabase="PostgreSQL" DBNameUppercase="True" OptimizeSQL="False" PHPDBLib="PostgreSQL" database="PostgreSQL" showViews="True" showSynonyms="True" showSysTable="False" showSysView="False" showAliases="False" relationshipDiscovery="True" serverPersistentConnection="False" serverUseODBCCursor="0" connectionType="ODBC" connectionString="IFP_IFALCONI" name="Conn" login="ifl" password="ifl123" schema="ifl" DBDateFormat="yyyy-mm-dd HH:nn:ss" DBBooleanFormat="t;f" serverHost="192.168.1.101" serverPort="5444" serverLogin="ifl" serverPassword="ifl123" serverDatabaseName="ifl_db" connection="Conn"/>
 			</Connections>
 		</Profile>
 		<Profile name="Server2" FTPPassiveMode="True" FTPSecureConnection="False" FTPpublishingAllMask="html;js;asp;php;jsp;cfm;pl;pm;cgi;mdb;gif;jpg;css;xml;java;ascx;aspx;cs;vb;vbproj;resx;config;vsdisco;csproj;webinfo;bat;tld;jar;properties;inc;txt;resources;swf" FTPpublishingExceptMask="ccs;ccp" FTPpublishingType="Project" fileExtension=".php" location="FTP" publishingAllMask="html;js;asp;php;jsp;cfm;cfc;pl;pm;cgi;mdb;gif;jpg;png;css;xml;java;asax;ascx;aspx;asmx;cs;vb;vbproj;resx;config;vsdisco;csproj;webinfo;bat;tld;jar;properties;inc;txt;resources;swf" publishingExceptMask="ccs;ccp" publishingType="Project">
