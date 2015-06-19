@@ -143,9 +143,9 @@ class clsGridModulGrid { //ModulGrid class @2-E05CEE1C
                    $this->code->Visible=false;
                 } else { 
 				   $this->module_image->Page = "f_modul.php";
-                   $this->module_image->Parameters = CCAddParam($this->module_image->Parameters, "p_application_id", $this->DataSource->f("P_APPLICATION_ID"));
-                   $this->module_image->Parameters = CCAddParam($this->module_image->Parameters, "p_application_code", $this->DataSource->f("CODE"));
-                   $this->module_image->Parameters = CCAddParam($this->module_image->Parameters, "module_image", $this->DataSource->f("MD_ON"));
+                   $this->module_image->Parameters = CCAddParam($this->module_image->Parameters, "p_application_id", $this->DataSource->f("p_application_id"));
+                   $this->module_image->Parameters = CCAddParam($this->module_image->Parameters, "p_application_code", $this->DataSource->f("code"));
+                   $this->module_image->Parameters = CCAddParam($this->module_image->Parameters, "module_image", $this->DataSource->f("md_on"));
                    $this->code_off->Visible=false;
                    $this->code->Visible=true;
                 }
@@ -288,7 +288,7 @@ class clsModulGridDataSource extends clsDBConn {  //ModulGridDataSource Class @2
 //SetValues Method @2-F814E68C
     function SetValues()
     {
-        $this->module_image->SetDBValue($this->f("MD_ON"));
+        $this->module_image->SetDBValue($this->f("md_on"));
         $this->code->SetDBValue($this->f("code"));
         $this->code_off->SetDBValue($this->f("code"));
     }
@@ -360,11 +360,11 @@ $Attributes->SetValue("pathToRoot", "../");
 $Attributes->Show();
 //End Initialize HTML Template
 
-//Go to destination page @1-158C12D2
+//Go to destination page @1-185312AD
 if($Redirect)
 {
     $CCSEventResult = CCGetEvent($CCSEvents, "BeforeUnload", $MainPage);
-    $DBTRBConn->close();
+    $DBConn->close();
     header("Location: " . $Redirect);
     unset($ModulGrid);
     unset($Tpl);
@@ -381,9 +381,9 @@ $CCSEventResult = CCGetEvent($CCSEvents, "BeforeOutput", $MainPage);
 if ($CCSEventResult) echo $main_block;
 //End Show Page
 
-//Unload Page @1-BABBEC74
+//Unload Page @1-794FCE94
 $CCSEventResult = CCGetEvent($CCSEvents, "BeforeUnload", $MainPage);
-$DBTRBConn->close();
+$DBConn->close();
 unset($ModulGrid);
 unset($Tpl);
 //End Unload Page
