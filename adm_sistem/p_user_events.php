@@ -48,7 +48,7 @@ function P_USERGrid_BeforeShowRow(& $sender)
 
     if ($selected_id<0 && $add_flag!="ADD") {
     	$selected_id = $Component->DataSource->P_USER_ID->GetValue();
-        $P_USERForm->DataSource->Parameters["urlP_USER_ID"] = $selected_id;
+        $P_USERForm->DataSource->Parameters["urlp_user_id"] = $selected_id;
         $P_USERForm->DataSource->Prepare();
         $P_USERForm->EditMode = $P_USERForm->DataSource->AllParametersSet;
         
@@ -92,7 +92,7 @@ function P_USERForm_Button_Reset_OnClick(& $sender)
 // -------------------------
     // Write your own code here.
 	$dbConn = new clsDBConn();
-	$query = "UPDATE P_USER SET USER_PWD=UPPER('" . md5(CCGetFromPost("USER_NAME", "-")) . "') WHERE P_USER_ID=" . CCGetFromGet("P_USER_ID", "0");
+	$query = "UPDATE p_user SET use_pwd='" . md5(CCGetFromPost("USER_NAME", "-")) . "' WHERE p_user_id=" . CCGetFromGet("P_USER_ID", "0");
 
 	$dbConn->query($query);
 	$dbConn->close();
@@ -120,7 +120,7 @@ function Page_OnInitializeView(& $sender)
     global $selected_id;
     global $add_flag;
     $selected_id = -1;
-    $selected_id=CCGetFromGet("P_USER_ID", $selected_id);
+    $selected_id=CCGetFromGet("p_user_id", $selected_id);
     $add_flag=CCGetFromGet("FLAG", "NONE");
 // -------------------------
 //End Custom Code

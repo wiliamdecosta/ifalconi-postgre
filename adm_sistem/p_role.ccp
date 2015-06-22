@@ -1,14 +1,17 @@
-<Page id="1" templateExtension="html" relativePath=".." fullRelativePath=".\admin" secured="False" urlType="Relative" isIncluded="False" SSLAccess="False" isService="False" cachingEnabled="False" validateRequest="True" cachingDuration="1 minutes" wizardTheme="sikm" wizardThemeVersion="3.0" needGeneration="0">
+<Page id="1" templateExtension="html" relativePath=".." fullRelativePath=".\adm_sistem" secured="False" urlType="Relative" isIncluded="False" SSLAccess="False" isService="False" cachingEnabled="False" validateRequest="True" cachingDuration="1 minutes" wizardTheme="sikm" wizardThemeVersion="3.0" needGeneration="0">
 	<Components>
-		<Grid id="2" secured="False" sourceType="Table" returnValueType="Number" defaultPageSize="5" connection="Conn" name="P_ROLEGrid" pageSizeLimit="100" wizardCaption="List of P APP ROLE " wizardGridType="Tabular" wizardSortingType="SimpleDir" wizardAllowInsert="True" wizardAltRecord="False" wizardAltRecordType="Style" wizardRecordSeparator="False" wizardNoRecords="Data Tidak Ditemukan" pasteAsReplace="pasteAsReplace" pasteActions="pasteActions" dataSource="P_ROLE" activeCollection="TableParameters">
+		<Grid id="2" secured="False" sourceType="SQL" returnValueType="Number" defaultPageSize="5" connection="Conn" name="P_ROLEGrid" pageSizeLimit="100" wizardCaption="List of P APP ROLE " wizardGridType="Tabular" wizardSortingType="SimpleDir" wizardAllowInsert="True" wizardAltRecord="False" wizardAltRecordType="Style" wizardRecordSeparator="False" wizardNoRecords="Data Tidak Ditemukan" pasteAsReplace="pasteAsReplace" pasteActions="pasteActions" dataSource="SELECT * 
+FROM p_role
+WHERE code ILIKE '%{s_keyword}%'
+OR description ILIKE '%{s_keyword}%' " activeCollection="TableParameters">
 			<Components>
-				<Label id="15" fieldSourceType="DBColumn" dataType="Text" html="False" name="CODE" fieldSource="CODE" wizardCaption="CODE" wizardSize="32" wizardMaxLength="32" wizardIsPassword="False" wizardUseTemplateBlock="False" wizardAddNbsp="True" PathID="P_ROLEGridCODE">
+				<Label id="15" fieldSourceType="DBColumn" dataType="Text" html="False" name="CODE" fieldSource="code" wizardCaption="CODE" wizardSize="32" wizardMaxLength="32" wizardIsPassword="False" wizardUseTemplateBlock="False" wizardAddNbsp="True" PathID="P_ROLEGridCODE">
 					<Components/>
 					<Events/>
 					<Attributes/>
 					<Features/>
 				</Label>
-				<Label id="17" fieldSourceType="DBColumn" dataType="Text" html="False" name="DESCRIPTION" fieldSource="DESCRIPTION" wizardCaption="DESCRIPTION" wizardSize="50" wizardMaxLength="250" wizardIsPassword="False" wizardUseTemplateBlock="False" wizardAddNbsp="True" PathID="P_ROLEGridDESCRIPTION">
+				<Label id="17" fieldSourceType="DBColumn" dataType="Text" html="False" name="DESCRIPTION" fieldSource="description" wizardCaption="DESCRIPTION" wizardSize="50" wizardMaxLength="250" wizardIsPassword="False" wizardUseTemplateBlock="False" wizardAddNbsp="True" PathID="P_ROLEGridDESCRIPTION">
 					<Components/>
 					<Events/>
 					<Attributes/>
@@ -30,12 +33,12 @@
 					<Components/>
 					<Events/>
 					<LinkParameters>
-						<LinkParameter id="124" sourceType="DataField" name="P_ROLE_ID" source="P_ROLE_ID"/>
+						<LinkParameter id="124" sourceType="DataField" name="p_role_id" source="p_role_id"/>
 					</LinkParameters>
 					<Attributes/>
 					<Features/>
 				</Link>
-				<Link id="7" visible="Yes" fieldSourceType="DBColumn" dataType="Text" html="True" hrefType="Page" urlType="Relative" preserveParameters="GET" name="P_ROLE_Insert" hrefSource="p_role.ccp" removeParameters="P_ROLE_ID" wizardThemeItem="FooterA" wizardDefaultValue="Add New" wizardUseTemplateBlock="False" PathID="P_ROLEGridP_ROLE_Insert">
+				<Link id="7" visible="Yes" fieldSourceType="DBColumn" dataType="Text" html="True" hrefType="Page" urlType="Relative" preserveParameters="GET" name="P_ROLE_Insert" hrefSource="p_role.ccp" removeParameters="p_role_id" wizardThemeItem="FooterA" wizardDefaultValue="Add New" wizardUseTemplateBlock="False" PathID="P_ROLEGridP_ROLE_Insert">
 					<Components/>
 					<Events>
 					</Events>
@@ -45,7 +48,7 @@
 					<Attributes/>
 					<Features/>
 				</Link>
-				<Hidden id="180" fieldSourceType="DBColumn" dataType="Float" name="P_ROLE_ID" wizardTheme="None" wizardThemeType="File" wizardThemeVersion="3.0" PathID="P_ROLEGridP_ROLE_ID" fieldSource="P_ROLE_ID">
+				<Hidden id="180" fieldSourceType="DBColumn" dataType="Float" name="P_ROLE_ID" wizardTheme="None" wizardThemeType="File" wizardThemeVersion="3.0" PathID="P_ROLEGridP_ROLE_ID" fieldSource="p_role_id">
 					<Components/>
 					<Events/>
 					<Attributes/>
@@ -60,17 +63,19 @@
 				</Event>
 			</Events>
 			<TableParameters>
-				<TableParameter id="174" conditionType="Parameter" useIsNull="False" field="CODE" dataType="Text" searchConditionType="Contains" parameterType="URL" logicOperator="Or" parameterSource="s_keyword"/>
-				<TableParameter id="175" conditionType="Parameter" useIsNull="False" field="DESCRIPTION" dataType="Text" searchConditionType="Contains" parameterType="URL" logicOperator="And" parameterSource="s_keyword"/>
+				<TableParameter id="174" conditionType="Parameter" useIsNull="False" field="code" dataType="Text" searchConditionType="Contains" parameterType="URL" logicOperator="Or" parameterSource="s_keyword"/>
+				<TableParameter id="175" conditionType="Parameter" useIsNull="False" field="description" dataType="Text" searchConditionType="Contains" parameterType="URL" logicOperator="And" parameterSource="s_keyword"/>
 			</TableParameters>
 			<JoinTables>
-				<JoinTable id="173" tableName="P_ROLE" posLeft="10" posTop="10" posWidth="131" posHeight="180"/>
-			</JoinTables>
+				<JoinTable id="183" tableName="p_role" posLeft="10" posTop="10" posWidth="115" posHeight="180"/>
+</JoinTables>
 			<JoinLinks/>
 			<Fields>
 			</Fields>
 			<SPParameters/>
-			<SQLParameters/>
+			<SQLParameters>
+<SQLParameter id="184" parameterType="URL" variable="s_keyword" dataType="Text" parameterSource="s_keyword"/>
+</SQLParameters>
 			<SecurityGroups/>
 			<Attributes/>
 			<Features/>
@@ -83,7 +88,7 @@
 					<Attributes/>
 					<Features/>
 				</TextBox>
-				<Button id="4" urlType="Relative" enableValidation="True" isDefault="False" name="Button_DoSearch" operation="Search" wizardCaption="Search" PathID="P_ROLESearchButton_DoSearch" removeParameters="P_APP_ROLE_ID;TAMBAH">
+				<Button id="4" urlType="Relative" enableValidation="True" isDefault="False" name="Button_DoSearch" operation="Search" wizardCaption="Search" PathID="P_ROLESearchButton_DoSearch" removeParameters="p_role_id;TAMBAH">
 					<Components/>
 					<Events/>
 					<Attributes/>
@@ -111,8 +116,14 @@
 			<Attributes/>
 			<Features/>
 		</Record>
-		<Record id="19" sourceType="Table" urlType="Relative" secured="False" allowInsert="True" allowUpdate="True" allowDelete="True" validateData="True" preserveParameters="GET" returnValueType="Number" returnValueTypeForDelete="Number" returnValueTypeForInsert="Number" returnValueTypeForUpdate="Number" connection="Conn" name="P_ROLEForm" errorSummator="Error" wizardCaption="Add/Edit P APP ROLE " wizardFormMethod="post" PathID="P_ROLEForm" activeCollection="DSQLParameters" customInsertType="SQL" customUpdateType="SQL" customDeleteType="SQL" customDelete="DELETE FROM P_ROLE WHERE P_ROLE_ID = {P_ROLE_ID}" pasteAsReplace="pasteAsReplace" pasteActions="pasteActions" parameterTypeListName="ParameterTypeList" customInsert="INSERT INTO P_ROLE(CODE, IS_ACTIVE, DESCRIPTION, CREATED_BY, CREATION_DATE, UPDATED_DATE, UPDATED_BY, P_ROLE_ID) 
-VALUES(UPPER('{CODE}'), '{IS_ACTIVE}', '{DESCRIPTION}', '{CREATED_BY}', sysdate, sysdate, '{UPDATED_BY}', generate_id('','P_ROLE','P_ROLE_ID'))" customUpdate="UPDATE P_ROLE SET CODE=UPPER('{CODE}'), IS_ACTIVE='{IS_ACTIVE}', DESCRIPTION='{DESCRIPTION}', UPDATED_DATE=sysdate, UPDATED_BY='{UPDATED_BY}' WHERE  P_ROLE_ID = {P_ROLE_ID}" dataSource="P_ROLE">
+		<Record id="19" sourceType="Table" urlType="Relative" secured="False" allowInsert="True" allowUpdate="True" allowDelete="True" validateData="True" preserveParameters="GET" returnValueType="Number" returnValueTypeForDelete="Number" returnValueTypeForInsert="Number" returnValueTypeForUpdate="Number" connection="Conn" name="P_ROLEForm" errorSummator="Error" wizardCaption="Add/Edit P APP ROLE " wizardFormMethod="post" PathID="P_ROLEForm" activeCollection="ISQLParameters" customInsertType="SQL" customUpdateType="SQL" customDeleteType="SQL" customDelete="DELETE FROM p_role WHERE p_role_id = {p_role_id}" pasteAsReplace="pasteAsReplace" pasteActions="pasteActions" parameterTypeListName="ParameterTypeList" customInsert="INSERT INTO p_role(code, is_active, description, created_by, creation_date, updated_date, updated_by, p_role_id) 
+VALUES(upper('{code}'), '{is_active}', '{description}', '{created_by}', current_date, current_date, '{updated_by}', generate_id('ifl','p_role','p_role_id'))" customUpdate="UPDATE p_role 
+SET code = upper('{code}'),
+is_active='{is_active}', 
+description='{description}', 
+updated_date=current_date, 
+updated_by='{updated_by}' 
+where  p_role_id = {p_role_id}" dataSource="p_role">
 			<Components>
 				<Button id="20" urlType="Relative" enableValidation="True" isDefault="False" name="Button_Insert" operation="Insert" wizardCaption="Add" PathID="P_ROLEFormButton_Insert" removeParameters="FLAG">
 					<Components/>
@@ -128,7 +139,7 @@ VALUES(UPPER('{CODE}'), '{IS_ACTIVE}', '{DESCRIPTION}', '{CREATED_BY}', sysdate,
 					<Attributes/>
 					<Features/>
 				</Button>
-				<Button id="22" urlType="Relative" enableValidation="False" isDefault="False" name="Button_Delete" operation="Delete" wizardCaption="Delete" PathID="P_ROLEFormButton_Delete" removeParameters="FLAG;P_APP_ROLE_ID">
+				<Button id="22" urlType="Relative" enableValidation="False" isDefault="False" name="Button_Delete" operation="Delete" wizardCaption="Delete" PathID="P_ROLEFormButton_Delete" removeParameters="FLAG;p_role_id">
 					<Components/>
 					<Events>
 						<Event name="OnClick" type="Client">
@@ -147,13 +158,13 @@ VALUES(UPPER('{CODE}'), '{IS_ACTIVE}', '{DESCRIPTION}', '{CREATED_BY}', sysdate,
 					<Attributes/>
 					<Features/>
 				</Button>
-				<TextBox id="26" visible="Yes" fieldSourceType="DBColumn" dataType="Text" name="CODE" fieldSource="CODE" required="True" caption="Role" wizardCaption="CODE" wizardSize="32" wizardMaxLength="32" wizardIsPassword="False" wizardUseTemplateBlock="False" PathID="P_ROLEFormCODE">
+				<TextBox id="26" visible="Yes" fieldSourceType="DBColumn" dataType="Text" name="CODE" fieldSource="code" required="True" caption="Role" wizardCaption="CODE" wizardSize="32" wizardMaxLength="32" wizardIsPassword="False" wizardUseTemplateBlock="False" PathID="P_ROLEFormCODE">
 					<Components/>
 					<Events/>
 					<Attributes/>
 					<Features/>
 				</TextBox>
-				<ListBox id="27" visible="Yes" fieldSourceType="DBColumn" dataType="Text" name="IS_ACTIVE" fieldSource="IS_ACTIVE" required="True" caption="Awal Masa Berlaku" wizardCaption="VALID FROM" wizardSize="8" wizardMaxLength="100" wizardIsPassword="False" wizardUseTemplateBlock="False" PathID="P_ROLEFormIS_ACTIVE" defaultValue="&quot;Y&quot;" sourceType="ListOfValues" connection="Conn" _valueOfList="N" _nameOfList="TIDAK AKTIF" dataSource="Y;AKTIF;N;TIDAK AKTIF">
+				<ListBox id="27" visible="Yes" fieldSourceType="DBColumn" dataType="Text" name="IS_ACTIVE" fieldSource="is_active" required="True" caption="Awal Masa Berlaku" wizardCaption="VALID FROM" wizardSize="8" wizardMaxLength="100" wizardIsPassword="False" wizardUseTemplateBlock="False" PathID="P_ROLEFormIS_ACTIVE" defaultValue="&quot;Y&quot;" sourceType="ListOfValues" connection="Conn" _valueOfList="N" _nameOfList="TIDAK AKTIF" dataSource="Y;AKTIF;N;TIDAK AKTIF">
 					<Components/>
 					<Events>
 					</Events>
@@ -166,37 +177,37 @@ VALUES(UPPER('{CODE}'), '{IS_ACTIVE}', '{DESCRIPTION}', '{CREATED_BY}', sysdate,
 					<JoinLinks/>
 					<Fields/>
 				</ListBox>
-				<TextArea id="31" visible="Yes" fieldSourceType="DBColumn" dataType="Text" name="DESCRIPTION" fieldSource="DESCRIPTION" required="False" caption="DESCRIPTION" wizardCaption="DESCRIPTION" wizardSize="50" wizardMaxLength="250" wizardIsPassword="False" wizardUseTemplateBlock="False" PathID="P_ROLEFormDESCRIPTION">
+				<TextArea id="31" visible="Yes" fieldSourceType="DBColumn" dataType="Text" name="DESCRIPTION" fieldSource="description" required="False" caption="DESCRIPTION" wizardCaption="DESCRIPTION" wizardSize="50" wizardMaxLength="250" wizardIsPassword="False" wizardUseTemplateBlock="False" PathID="P_ROLEFormDESCRIPTION">
 					<Components/>
 					<Events/>
 					<Attributes/>
 					<Features/>
 				</TextArea>
-				<TextBox id="34" visible="Yes" fieldSourceType="DBColumn" dataType="Text" name="CREATED_BY" fieldSource="CREATED_BY" required="True" caption="CREATED BY" wizardCaption="CREATED BY" wizardSize="12" wizardMaxLength="12" wizardIsPassword="False" wizardUseTemplateBlock="False" PathID="P_ROLEFormCREATED_BY" defaultValue="CCGetUserLogin()">
+				<TextBox id="34" visible="Yes" fieldSourceType="DBColumn" dataType="Text" name="CREATED_BY" fieldSource="created_by" required="True" caption="CREATED BY" wizardCaption="CREATED BY" wizardSize="12" wizardMaxLength="12" wizardIsPassword="False" wizardUseTemplateBlock="False" PathID="P_ROLEFormCREATED_BY" defaultValue="CCGetUserLogin()">
 					<Components/>
 					<Events/>
 					<Attributes/>
 					<Features/>
 				</TextBox>
-				<TextBox id="32" visible="Yes" fieldSourceType="DBColumn" dataType="Date" name="CREATION_DATE" fieldSource="CREATION_DATE" required="False" caption="CREATION DATE" wizardCaption="CREATION DATE" wizardSize="8" wizardMaxLength="100" wizardIsPassword="False" wizardUseTemplateBlock="False" PathID="P_ROLEFormCREATION_DATE" defaultValue="CurrentDate" format="dd-mmm-yyyy">
+				<TextBox id="32" visible="Yes" fieldSourceType="DBColumn" dataType="Date" name="CREATION_DATE" fieldSource="creation_date" required="False" caption="CREATION DATE" wizardCaption="CREATION DATE" wizardSize="8" wizardMaxLength="100" wizardIsPassword="False" wizardUseTemplateBlock="False" PathID="P_ROLEFormCREATION_DATE" defaultValue="CurrentDate" format="dd-mmm-yyyy">
 					<Components/>
 					<Events/>
 					<Attributes/>
 					<Features/>
 				</TextBox>
-				<TextBox id="35" visible="Yes" fieldSourceType="DBColumn" dataType="Date" name="UPDATED_DATE" fieldSource="UPDATED_DATE" required="False" caption="UPDATED DATE" wizardCaption="UPDATED DATE" wizardSize="8" wizardMaxLength="100" wizardIsPassword="False" wizardUseTemplateBlock="False" PathID="P_ROLEFormUPDATED_DATE" defaultValue="CurrentDate" format="dd-mmm-yyyy">
+				<TextBox id="35" visible="Yes" fieldSourceType="DBColumn" dataType="Date" name="UPDATED_DATE" fieldSource="updated_date" required="False" caption="UPDATED DATE" wizardCaption="UPDATED DATE" wizardSize="8" wizardMaxLength="100" wizardIsPassword="False" wizardUseTemplateBlock="False" PathID="P_ROLEFormUPDATED_DATE" defaultValue="CurrentDate" format="dd-mmm-yyyy">
 					<Components/>
 					<Events/>
 					<Attributes/>
 					<Features/>
 				</TextBox>
-				<TextBox id="37" visible="Yes" fieldSourceType="DBColumn" dataType="Text" name="UPDATED_BY" fieldSource="UPDATED_BY" required="True" caption="UPDATED BY" wizardCaption="UPDATED BY" wizardSize="12" wizardMaxLength="12" wizardIsPassword="False" wizardUseTemplateBlock="False" PathID="P_ROLEFormUPDATED_BY" defaultValue="CCGetUserLogin()">
+				<TextBox id="37" visible="Yes" fieldSourceType="DBColumn" dataType="Text" name="UPDATED_BY" fieldSource="updated_by" required="True" caption="UPDATED BY" wizardCaption="UPDATED BY" wizardSize="12" wizardMaxLength="12" wizardIsPassword="False" wizardUseTemplateBlock="False" PathID="P_ROLEFormUPDATED_BY" defaultValue="CCGetUserLogin()">
 					<Components/>
 					<Events/>
 					<Attributes/>
 					<Features/>
 				</TextBox>
-				<Hidden id="181" fieldSourceType="DBColumn" dataType="Float" name="P_ROLE_ID" wizardTheme="None" wizardThemeType="File" wizardThemeVersion="3.0" PathID="P_ROLEFormP_ROLE_ID" fieldSource="P_ROLE_ID">
+				<Hidden id="181" fieldSourceType="DBColumn" dataType="Float" name="P_ROLE_ID" wizardTheme="None" wizardThemeType="File" wizardThemeVersion="3.0" PathID="P_ROLEFormP_ROLE_ID" fieldSource="p_role_id">
 					<Components/>
 					<Events/>
 					<Attributes/>
@@ -206,23 +217,23 @@ VALUES(UPPER('{CODE}'), '{IS_ACTIVE}', '{DESCRIPTION}', '{CREATED_BY}', sysdate,
 			<Events>
 			</Events>
 			<TableParameters>
-				<TableParameter id="178" conditionType="Parameter" useIsNull="False" field="P_ROLE_ID" dataType="Float" searchConditionType="Equal" parameterType="URL" logicOperator="And" parameterSource="P_ROLE_ID"/>
+				<TableParameter id="178" conditionType="Parameter" useIsNull="False" field="p_role_id" dataType="Float" searchConditionType="Equal" parameterType="URL" logicOperator="And" parameterSource="p_role_id"/>
 			</TableParameters>
 			<SPParameters/>
 			<SQLParameters>
 			</SQLParameters>
 			<JoinTables>
-				<JoinTable id="177" tableName="P_ROLE" posLeft="10" posTop="10" posWidth="131" posHeight="180"/>
+				<JoinTable id="182" tableName="p_role" posLeft="10" posTop="10" posWidth="115" posHeight="180"/>
 			</JoinTables>
 			<JoinLinks/>
 			<Fields/>
 			<ISPParameters/>
 			<ISQLParameters>
-				<SQLParameter id="150" variable="CODE" dataType="Text" parameterType="Control" parameterSource="CODE"/>
-				<SQLParameter id="151" variable="IS_ACTIVE" dataType="Text" parameterType="Control" parameterSource="IS_ACTIVE"/>
-				<SQLParameter id="152" variable="DESCRIPTION" dataType="Text" parameterType="Control" parameterSource="DESCRIPTION"/>
-				<SQLParameter id="153" variable="CREATED_BY" dataType="Text" parameterType="Session" parameterSource="UserName"/>
-				<SQLParameter id="156" variable="UPDATED_BY" dataType="Text" parameterType="Session" parameterSource="UserName"/>
+				<SQLParameter id="150" variable="code" dataType="Text" parameterType="Control" parameterSource="CODE"/>
+				<SQLParameter id="151" variable="is_active" dataType="Text" parameterType="Control" parameterSource="IS_ACTIVE"/>
+				<SQLParameter id="152" variable="description" dataType="Text" parameterType="Control" parameterSource="DESCRIPTION"/>
+				<SQLParameter id="153" variable="created_by" dataType="Text" parameterType="Session" parameterSource="UserName"/>
+				<SQLParameter id="156" variable="updated_by" dataType="Text" parameterType="Session" parameterSource="UserName"/>
 			</ISQLParameters>
 			<IFormElements>
 				<CustomParameter id="142" field="CODE" dataType="Text" parameterType="Control" parameterSource="CODE" omitIfEmpty="True"/>
@@ -242,14 +253,13 @@ VALUES(UPPER('{CODE}'), '{IS_ACTIVE}', '{DESCRIPTION}', '{CREATED_BY}', sysdate,
 				<SPParameter id="Key136" parameterName="o_result_msg" parameterSource="o_result_msg" dataType="Char" parameterType="URL" dataSize="255" direction="Output" scale="10" precision="6"/>
 			</USPParameters>
 			<USQLParameters>
-				<SQLParameter id="166" variable="CODE" dataType="Text" parameterType="Control" parameterSource="CODE"/>
-				<SQLParameter id="167" variable="IS_ACTIVE" dataType="Text" parameterType="Control" parameterSource="IS_ACTIVE"/>
-				<SQLParameter id="168" variable="DESCRIPTION" dataType="Text" parameterType="Control" parameterSource="DESCRIPTION"/>
-				<SQLParameter id="170" variable="UPDATED_BY" dataType="Text" parameterType="Session" parameterSource="UserName"/>
-				<SQLParameter id="171" variable="P_ROLE_ID" parameterType="Control" dataType="Float" parameterSource="P_ROLE_ID" defaultValue="0"/>
+				<SQLParameter id="166" variable="code" dataType="Text" parameterType="Control" parameterSource="CODE"/>
+				<SQLParameter id="167" variable="is_active" dataType="Text" parameterType="Control" parameterSource="IS_ACTIVE"/>
+				<SQLParameter id="168" variable="description" dataType="Text" parameterType="Control" parameterSource="DESCRIPTION"/>
+				<SQLParameter id="170" variable="updated_by" dataType="Text" parameterType="Session" parameterSource="UserName"/>
+				<SQLParameter id="171" variable="p_role_id" parameterType="Control" dataType="Float" parameterSource="P_ROLE_ID" defaultValue="0"/>
 			</USQLParameters>
 			<UConditions>
-				<TableParameter id="165" conditionType="Parameter" useIsNull="False" field="P_APP_ROLE_ID" dataType="Float" searchConditionType="Equal" parameterType="Control" logicOperator="And" parameterSource="P_APP_ROLE_ID"/>
 			</UConditions>
 			<UFormElements>
 				<CustomParameter id="157" field="CODE" dataType="Text" parameterType="Control" parameterSource="CODE" omitIfEmpty="True"/>
@@ -260,7 +270,7 @@ VALUES(UPPER('{CODE}'), '{IS_ACTIVE}', '{DESCRIPTION}', '{CREATED_BY}', sysdate,
 			</UFormElements>
 			<DSPParameters/>
 			<DSQLParameters>
-				<SQLParameter id="133" variable="P_ROLE_ID" parameterType="Control" dataType="Float" parameterSource="P_ROLE_ID" defaultValue="0"/>
+				<SQLParameter id="133" variable="p_role_id" parameterType="Control" dataType="Float" parameterSource="P_ROLE_ID" defaultValue="0"/>
 			</DSQLParameters>
 			<DConditions>
 				<TableParameter id="112" conditionType="Parameter" useIsNull="False" field="P_APP_ROLE_ID" dataType="Float" parameterType="URL" parameterSource="P_APP_ROLE_ID" defaultValue="SELECTED_ID" searchConditionType="Equal" logicOperator="And" orderNumber="1"/>

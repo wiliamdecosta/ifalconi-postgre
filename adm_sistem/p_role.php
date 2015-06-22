@@ -75,14 +75,13 @@ class clsGridP_ROLEGrid { //P_ROLEGrid class @2-ECAD58B3
         $this->DLink->HTML = true;
         $this->DLink->Page = "p_role.php";
         $this->P_ROLE_ID = & new clsControl(ccsHidden, "P_ROLE_ID", "P_ROLE_ID", ccsFloat, "", CCGetRequestParam("P_ROLE_ID", ccsGet, NULL), $this);
-        $this->Navigator = & new clsNavigator($this->ComponentName, "Navigator", $FileName, 5, tpCentered, $this, "P_ROLE_ID");
+        $this->Navigator = & new clsNavigator($this->ComponentName, "Navigator", $FileName, 5, tpCentered, $this);
         $this->Navigator->PageSizes = array("1", "5", "10", "25", "50");
         $this->P_ROLE_Insert = & new clsControl(ccsLink, "P_ROLE_Insert", "P_ROLE_Insert", ccsText, "", CCGetRequestParam("P_ROLE_Insert", ccsGet, NULL), $this);
         $this->P_ROLE_Insert->HTML = true;
         $this->P_ROLE_Insert->Page = "p_role.php";
     }
 //End Class_Initialize Event
-
 
 //Initialize Method @2-90E704C5
     function Initialize()
@@ -95,7 +94,7 @@ class clsGridP_ROLEGrid { //P_ROLEGrid class @2-ECAD58B3
     }
 //End Initialize Method
 
-//Show Method @2-E11AB484
+//Show Method @2-390A1470
     function Show()
     {
         global $Tpl;
@@ -138,7 +137,7 @@ class clsGridP_ROLEGrid { //P_ROLEGrid class @2-ECAD58B3
                 $this->CODE->SetValue($this->DataSource->CODE->GetValue());
                 $this->DESCRIPTION->SetValue($this->DataSource->DESCRIPTION->GetValue());
                 $this->DLink->Parameters = CCGetQueryString("QueryString", array("FLAG", "ccsForm"));
-                $this->DLink->Parameters = CCAddParam($this->DLink->Parameters, "P_ROLE_ID", $this->DataSource->f("P_ROLE_ID"));
+                $this->DLink->Parameters = CCAddParam($this->DLink->Parameters, "p_role_id", $this->DataSource->f("p_role_id"));
                 $this->P_ROLE_ID->SetValue($this->DataSource->P_ROLE_ID->GetValue());
                 $this->Attributes->SetValue("rowNumber", $this->RowNumber);
                 $this->CCSEventResult = CCGetEvent($this->CCSEvents, "BeforeShowRow", $this);
@@ -172,7 +171,7 @@ class clsGridP_ROLEGrid { //P_ROLEGrid class @2-ECAD58B3
         if ($this->Navigator->TotalPages <= 1) {
             $this->Navigator->Visible = false;
         }
-        $this->P_ROLE_Insert->Parameters = CCGetQueryString("QueryString", array("P_ROLE_ID", "ccsForm"));
+        $this->P_ROLE_Insert->Parameters = CCGetQueryString("QueryString", array("p_role_id", "ccsForm"));
         $this->P_ROLE_Insert->Parameters = CCAddParam($this->P_ROLE_Insert->Parameters, "FLAG", "ADD");
         $this->Navigator->Show();
         $this->P_ROLE_Insert->Show();
@@ -242,31 +241,28 @@ class clsP_ROLEGridDataSource extends clsDBConn {  //P_ROLEGridDataSource Class 
     }
 //End SetOrder Method
 
-//Prepare Method @2-E1D20DBD
+//Prepare Method @2-25AA94A2
     function Prepare()
     {
         global $CCSLocales;
         global $DefaultDateFormat;
         $this->wp = new clsSQLParameters($this->ErrorBlock);
         $this->wp->AddParameter("1", "urls_keyword", ccsText, "", "", $this->Parameters["urls_keyword"], "", false);
-        $this->wp->AddParameter("2", "urls_keyword", ccsText, "", "", $this->Parameters["urls_keyword"], "", false);
-        $this->wp->Criterion[1] = $this->wp->Operation(opContains, "CODE", $this->wp->GetDBValue("1"), $this->ToSQL($this->wp->GetDBValue("1"), ccsText),false);
-        $this->wp->Criterion[2] = $this->wp->Operation(opContains, "DESCRIPTION", $this->wp->GetDBValue("2"), $this->ToSQL($this->wp->GetDBValue("2"), ccsText),false);
-        $this->Where = $this->wp->opOR(
-             false, 
-             $this->wp->Criterion[1], 
-             $this->wp->Criterion[2]);
     }
 //End Prepare Method
 
-//Open Method @2-B915F99B
+//Open Method @2-86F34A83
     function Open()
     {
         $this->CCSEventResult = CCGetEvent($this->CCSEvents, "BeforeBuildSelect", $this->Parent);
-        $this->CountSQL = "SELECT COUNT(*)\n\n" .
-        "FROM P_ROLE";
-        $this->SQL = "SELECT * \n\n" .
-        "FROM P_ROLE {SQL_Where} {SQL_OrderBy}";
+        $this->CountSQL = "SELECT COUNT(*) FROM (SELECT * \n" .
+        "FROM p_role\n" .
+        "WHERE code ILIKE '%" . $this->SQLValue($this->wp->GetDBValue("1"), ccsText) . "%'\n" .
+        "OR description ILIKE '%" . $this->SQLValue($this->wp->GetDBValue("1"), ccsText) . "%' ) cnt";
+        $this->SQL = "SELECT * \n" .
+        "FROM p_role\n" .
+        "WHERE code ILIKE '%" . $this->SQLValue($this->wp->GetDBValue("1"), ccsText) . "%'\n" .
+        "OR description ILIKE '%" . $this->SQLValue($this->wp->GetDBValue("1"), ccsText) . "%' ";
         $this->CCSEventResult = CCGetEvent($this->CCSEvents, "BeforeExecuteSelect", $this->Parent);
         if ($this->CountSQL) 
             $this->RecordsCount = CCGetDBValue(CCBuildSQL($this->CountSQL, $this->Where, ""), $this);
@@ -278,12 +274,12 @@ class clsP_ROLEGridDataSource extends clsDBConn {  //P_ROLEGridDataSource Class 
     }
 //End Open Method
 
-//SetValues Method @2-3CD3E2D7
+//SetValues Method @2-755E6C8B
     function SetValues()
     {
-        $this->CODE->SetDBValue($this->f("CODE"));
-        $this->DESCRIPTION->SetDBValue($this->f("DESCRIPTION"));
-        $this->P_ROLE_ID->SetDBValue(trim($this->f("P_ROLE_ID")));
+        $this->CODE->SetDBValue($this->f("code"));
+        $this->DESCRIPTION->SetDBValue($this->f("description"));
+        $this->P_ROLE_ID->SetDBValue(trim($this->f("p_role_id")));
     }
 //End SetValues Method
 
@@ -393,7 +389,7 @@ function GetPrimaryKey($keyName)
 }
 //End MasterDetail
 
-//Operation Method @3-2BC2229B
+//Operation Method @3-F2FE5579
     function Operation()
     {
         if(!$this->Visible)
@@ -415,7 +411,7 @@ function GetPrimaryKey($keyName)
         $Redirect = "p_role.php" . "?" . CCGetQueryString("All", array("ccsForm"));
         if($this->Validate()) {
             if($this->PressedButton == "Button_DoSearch") {
-                $Redirect = "p_role.php" . "?" . CCMergeQueryStrings(CCGetQueryString("Form", array("Button_DoSearch", "Button_DoSearch_x", "Button_DoSearch_y", "P_APP_ROLE_ID", "TAMBAH")), CCGetQueryString("QueryString", array("s_keyword", "ccsForm", "P_APP_ROLE_ID", "TAMBAH")));
+                $Redirect = "p_role.php" . "?" . CCMergeQueryStrings(CCGetQueryString("Form", array("Button_DoSearch", "Button_DoSearch_x", "Button_DoSearch_y", "p_role_id", "TAMBAH")), CCGetQueryString("QueryString", array("s_keyword", "ccsForm", "p_role_id", "TAMBAH")));
                 if(!CCGetEvent($this->Button_DoSearch->CCSEvents, "OnClick", $this->Button_DoSearch)) {
                     $Redirect = "";
                 }
@@ -581,14 +577,14 @@ class clsRecordP_ROLEForm { //P_ROLEForm Class @19-90B32452
     }
 //End Class_Initialize Event
 
-//Initialize Method @19-9CE5E42D
+//Initialize Method @19-B7053FAD
     function Initialize()
     {
 
         if(!$this->Visible)
             return;
 
-        $this->DataSource->Parameters["urlP_ROLE_ID"] = CCGetFromGet("P_ROLE_ID", NULL);
+        $this->DataSource->Parameters["urlp_role_id"] = CCGetFromGet("p_role_id", NULL);
     }
 //End Initialize Method
 
@@ -652,7 +648,7 @@ function GetPrimaryKey($keyName)
 }
 //End MasterDetail
 
-//Operation Method @19-AED6223D
+//Operation Method @19-F672095D
     function Operation()
     {
         if(!$this->Visible)
@@ -681,7 +677,7 @@ function GetPrimaryKey($keyName)
         }
         $Redirect = $FileName . "?" . CCGetQueryString("QueryString", array("ccsForm"));
         if($this->PressedButton == "Button_Delete") {
-            $Redirect = $FileName . "?" . CCGetQueryString("QueryString", array("ccsForm", "FLAG", "P_APP_ROLE_ID"));
+            $Redirect = $FileName . "?" . CCGetQueryString("QueryString", array("ccsForm", "FLAG", "p_role_id"));
             if(!CCGetEvent($this->Button_Delete->CCSEvents, "OnClick", $this->Button_Delete) || !$this->DeleteRow()) {
                 $Redirect = "";
             }
@@ -724,7 +720,7 @@ function GetPrimaryKey($keyName)
     }
 //End InsertRow Method
 
-//UpdateRow Method @19-51FD0838
+//UpdateRow Method @19-D70B6F88
     function UpdateRow()
     {
         $this->CCSEventResult = CCGetEvent($this->CCSEvents, "BeforeUpdate", $this);
@@ -733,7 +729,6 @@ function GetPrimaryKey($keyName)
         $this->DataSource->IS_ACTIVE->SetValue($this->IS_ACTIVE->GetValue(true));
         $this->DataSource->DESCRIPTION->SetValue($this->DESCRIPTION->GetValue(true));
         $this->DataSource->P_ROLE_ID->SetValue($this->P_ROLE_ID->GetValue(true));
-        $this->DataSource->P_APP_ROLE_ID->SetValue($this->P_APP_ROLE_ID->GetValue(true));
         $this->DataSource->Update();
         $this->CCSEventResult = CCGetEvent($this->CCSEvents, "AfterUpdate", $this);
         return (!$this->CheckErrors());
@@ -899,70 +894,70 @@ class clsP_ROLEFormDataSource extends clsDBConn {  //P_ROLEFormDataSource Class 
     }
 //End DataSourceClass_Initialize Event
 
-//Prepare Method @19-48A9CFDF
+//Prepare Method @19-92BA5D3F
     function Prepare()
     {
         global $CCSLocales;
         global $DefaultDateFormat;
         $this->wp = new clsSQLParameters($this->ErrorBlock);
-        $this->wp->AddParameter("1", "urlP_ROLE_ID", ccsFloat, "", "", $this->Parameters["urlP_ROLE_ID"], "", false);
+        $this->wp->AddParameter("1", "urlp_role_id", ccsFloat, "", "", $this->Parameters["urlp_role_id"], "", false);
         $this->AllParametersSet = $this->wp->AllParamsSet();
-        $this->wp->Criterion[1] = $this->wp->Operation(opEqual, "P_ROLE_ID", $this->wp->GetDBValue("1"), $this->ToSQL($this->wp->GetDBValue("1"), ccsFloat),false);
+        $this->wp->Criterion[1] = $this->wp->Operation(opEqual, "p_role_id", $this->wp->GetDBValue("1"), $this->ToSQL($this->wp->GetDBValue("1"), ccsFloat),false);
         $this->Where = 
              $this->wp->Criterion[1];
     }
 //End Prepare Method
 
-//Open Method @19-08A900BB
+//Open Method @19-D825F72F
     function Open()
     {
         $this->CCSEventResult = CCGetEvent($this->CCSEvents, "BeforeBuildSelect", $this->Parent);
         $this->SQL = "SELECT * \n\n" .
-        "FROM P_ROLE {SQL_Where} {SQL_OrderBy}";
+        "FROM p_role {SQL_Where} {SQL_OrderBy}";
         $this->CCSEventResult = CCGetEvent($this->CCSEvents, "BeforeExecuteSelect", $this->Parent);
         $this->query(CCBuildSQL($this->SQL, $this->Where, $this->Order));
         $this->CCSEventResult = CCGetEvent($this->CCSEvents, "AfterExecuteSelect", $this->Parent);
     }
 //End Open Method
 
-//SetValues Method @19-F5A2E805
+//SetValues Method @19-985A9186
     function SetValues()
     {
-        $this->CODE->SetDBValue($this->f("CODE"));
-        $this->IS_ACTIVE->SetDBValue($this->f("IS_ACTIVE"));
-        $this->DESCRIPTION->SetDBValue($this->f("DESCRIPTION"));
-        $this->CREATED_BY->SetDBValue($this->f("CREATED_BY"));
-        $this->CREATION_DATE->SetDBValue(trim($this->f("CREATION_DATE")));
-        $this->UPDATED_DATE->SetDBValue(trim($this->f("UPDATED_DATE")));
-        $this->UPDATED_BY->SetDBValue($this->f("UPDATED_BY"));
-        $this->P_ROLE_ID->SetDBValue(trim($this->f("P_ROLE_ID")));
+        $this->CODE->SetDBValue($this->f("code"));
+        $this->IS_ACTIVE->SetDBValue($this->f("is_active"));
+        $this->DESCRIPTION->SetDBValue($this->f("description"));
+        $this->CREATED_BY->SetDBValue($this->f("created_by"));
+        $this->CREATION_DATE->SetDBValue(trim($this->f("creation_date")));
+        $this->UPDATED_DATE->SetDBValue(trim($this->f("updated_date")));
+        $this->UPDATED_BY->SetDBValue($this->f("updated_by"));
+        $this->P_ROLE_ID->SetDBValue(trim($this->f("p_role_id")));
     }
 //End SetValues Method
 
-//Insert Method @19-48D372E6
+//Insert Method @19-E9C197B6
     function Insert()
     {
         global $CCSLocales;
         global $DefaultDateFormat;
         $this->CmdExecution = true;
-        $this->cp["CODE"] = new clsSQLParameter("ctrlCODE", ccsText, "", "", $this->CODE->GetValue(true), "", false, $this->ErrorBlock);
-        $this->cp["IS_ACTIVE"] = new clsSQLParameter("ctrlIS_ACTIVE", ccsText, "", "", $this->IS_ACTIVE->GetValue(true), "", false, $this->ErrorBlock);
-        $this->cp["DESCRIPTION"] = new clsSQLParameter("ctrlDESCRIPTION", ccsText, "", "", $this->DESCRIPTION->GetValue(true), "", false, $this->ErrorBlock);
-        $this->cp["CREATED_BY"] = new clsSQLParameter("sesUserName", ccsText, "", "", CCGetSession("UserName", NULL), "", false, $this->ErrorBlock);
-        $this->cp["UPDATED_BY"] = new clsSQLParameter("sesUserName", ccsText, "", "", CCGetSession("UserName", NULL), "", false, $this->ErrorBlock);
+        $this->cp["code"] = new clsSQLParameter("ctrlCODE", ccsText, "", "", $this->CODE->GetValue(true), "", false, $this->ErrorBlock);
+        $this->cp["is_active"] = new clsSQLParameter("ctrlIS_ACTIVE", ccsText, "", "", $this->IS_ACTIVE->GetValue(true), "", false, $this->ErrorBlock);
+        $this->cp["description"] = new clsSQLParameter("ctrlDESCRIPTION", ccsText, "", "", $this->DESCRIPTION->GetValue(true), "", false, $this->ErrorBlock);
+        $this->cp["created_by"] = new clsSQLParameter("sesUserName", ccsText, "", "", CCGetSession("UserName", NULL), "", false, $this->ErrorBlock);
+        $this->cp["updated_by"] = new clsSQLParameter("sesUserName", ccsText, "", "", CCGetSession("UserName", NULL), "", false, $this->ErrorBlock);
         $this->CCSEventResult = CCGetEvent($this->CCSEvents, "BeforeBuildInsert", $this->Parent);
-        if (!is_null($this->cp["CODE"]->GetValue()) and !strlen($this->cp["CODE"]->GetText()) and !is_bool($this->cp["CODE"]->GetValue())) 
-            $this->cp["CODE"]->SetValue($this->CODE->GetValue(true));
-        if (!is_null($this->cp["IS_ACTIVE"]->GetValue()) and !strlen($this->cp["IS_ACTIVE"]->GetText()) and !is_bool($this->cp["IS_ACTIVE"]->GetValue())) 
-            $this->cp["IS_ACTIVE"]->SetValue($this->IS_ACTIVE->GetValue(true));
-        if (!is_null($this->cp["DESCRIPTION"]->GetValue()) and !strlen($this->cp["DESCRIPTION"]->GetText()) and !is_bool($this->cp["DESCRIPTION"]->GetValue())) 
-            $this->cp["DESCRIPTION"]->SetValue($this->DESCRIPTION->GetValue(true));
-        if (!is_null($this->cp["CREATED_BY"]->GetValue()) and !strlen($this->cp["CREATED_BY"]->GetText()) and !is_bool($this->cp["CREATED_BY"]->GetValue())) 
-            $this->cp["CREATED_BY"]->SetValue(CCGetSession("UserName", NULL));
-        if (!is_null($this->cp["UPDATED_BY"]->GetValue()) and !strlen($this->cp["UPDATED_BY"]->GetText()) and !is_bool($this->cp["UPDATED_BY"]->GetValue())) 
-            $this->cp["UPDATED_BY"]->SetValue(CCGetSession("UserName", NULL));
-        $this->SQL = "INSERT INTO P_ROLE(CODE, IS_ACTIVE, DESCRIPTION, CREATED_BY, CREATION_DATE, UPDATED_DATE, UPDATED_BY, P_ROLE_ID) \n" .
-        "VALUES(UPPER('" . $this->SQLValue($this->cp["CODE"]->GetDBValue(), ccsText) . "'), '" . $this->SQLValue($this->cp["IS_ACTIVE"]->GetDBValue(), ccsText) . "', '" . $this->SQLValue($this->cp["DESCRIPTION"]->GetDBValue(), ccsText) . "', '" . $this->SQLValue($this->cp["CREATED_BY"]->GetDBValue(), ccsText) . "', sysdate, sysdate, '" . $this->SQLValue($this->cp["UPDATED_BY"]->GetDBValue(), ccsText) . "', generate_id('','P_ROLE','P_ROLE_ID'))";
+        if (!is_null($this->cp["code"]->GetValue()) and !strlen($this->cp["code"]->GetText()) and !is_bool($this->cp["code"]->GetValue())) 
+            $this->cp["code"]->SetValue($this->CODE->GetValue(true));
+        if (!is_null($this->cp["is_active"]->GetValue()) and !strlen($this->cp["is_active"]->GetText()) and !is_bool($this->cp["is_active"]->GetValue())) 
+            $this->cp["is_active"]->SetValue($this->IS_ACTIVE->GetValue(true));
+        if (!is_null($this->cp["description"]->GetValue()) and !strlen($this->cp["description"]->GetText()) and !is_bool($this->cp["description"]->GetValue())) 
+            $this->cp["description"]->SetValue($this->DESCRIPTION->GetValue(true));
+        if (!is_null($this->cp["created_by"]->GetValue()) and !strlen($this->cp["created_by"]->GetText()) and !is_bool($this->cp["created_by"]->GetValue())) 
+            $this->cp["created_by"]->SetValue(CCGetSession("UserName", NULL));
+        if (!is_null($this->cp["updated_by"]->GetValue()) and !strlen($this->cp["updated_by"]->GetText()) and !is_bool($this->cp["updated_by"]->GetValue())) 
+            $this->cp["updated_by"]->SetValue(CCGetSession("UserName", NULL));
+        $this->SQL = "INSERT INTO p_role(code, is_active, description, created_by, creation_date, updated_date, updated_by, p_role_id) \n" .
+        "VALUES(upper('" . $this->SQLValue($this->cp["code"]->GetDBValue(), ccsText) . "'), '" . $this->SQLValue($this->cp["is_active"]->GetDBValue(), ccsText) . "', '" . $this->SQLValue($this->cp["description"]->GetDBValue(), ccsText) . "', '" . $this->SQLValue($this->cp["created_by"]->GetDBValue(), ccsText) . "', current_date, current_date, '" . $this->SQLValue($this->cp["updated_by"]->GetDBValue(), ccsText) . "', generate_id('ifl','p_role','p_role_id'))";
         $this->CCSEventResult = CCGetEvent($this->CCSEvents, "BeforeExecuteInsert", $this->Parent);
         if($this->Errors->Count() == 0 && $this->CmdExecution) {
             $this->query($this->SQL);
@@ -971,31 +966,37 @@ class clsP_ROLEFormDataSource extends clsDBConn {  //P_ROLEFormDataSource Class 
     }
 //End Insert Method
 
-//Update Method @19-AC95A79F
+//Update Method @19-A822D095
     function Update()
     {
         global $CCSLocales;
         global $DefaultDateFormat;
         $this->CmdExecution = true;
-        $this->cp["CODE"] = new clsSQLParameter("ctrlCODE", ccsText, "", "", $this->CODE->GetValue(true), "", false, $this->ErrorBlock);
-        $this->cp["IS_ACTIVE"] = new clsSQLParameter("ctrlIS_ACTIVE", ccsText, "", "", $this->IS_ACTIVE->GetValue(true), "", false, $this->ErrorBlock);
-        $this->cp["DESCRIPTION"] = new clsSQLParameter("ctrlDESCRIPTION", ccsText, "", "", $this->DESCRIPTION->GetValue(true), "", false, $this->ErrorBlock);
-        $this->cp["UPDATED_BY"] = new clsSQLParameter("sesUserName", ccsText, "", "", CCGetSession("UserName", NULL), "", false, $this->ErrorBlock);
-        $this->cp["P_ROLE_ID"] = new clsSQLParameter("ctrlP_ROLE_ID", ccsFloat, "", "", $this->P_ROLE_ID->GetValue(true), 0, false, $this->ErrorBlock);
+        $this->cp["code"] = new clsSQLParameter("ctrlCODE", ccsText, "", "", $this->CODE->GetValue(true), "", false, $this->ErrorBlock);
+        $this->cp["is_active"] = new clsSQLParameter("ctrlIS_ACTIVE", ccsText, "", "", $this->IS_ACTIVE->GetValue(true), "", false, $this->ErrorBlock);
+        $this->cp["description"] = new clsSQLParameter("ctrlDESCRIPTION", ccsText, "", "", $this->DESCRIPTION->GetValue(true), "", false, $this->ErrorBlock);
+        $this->cp["updated_by"] = new clsSQLParameter("sesUserName", ccsText, "", "", CCGetSession("UserName", NULL), "", false, $this->ErrorBlock);
+        $this->cp["p_role_id"] = new clsSQLParameter("ctrlP_ROLE_ID", ccsFloat, "", "", $this->P_ROLE_ID->GetValue(true), 0, false, $this->ErrorBlock);
         $this->CCSEventResult = CCGetEvent($this->CCSEvents, "BeforeBuildUpdate", $this->Parent);
-        if (!is_null($this->cp["CODE"]->GetValue()) and !strlen($this->cp["CODE"]->GetText()) and !is_bool($this->cp["CODE"]->GetValue())) 
-            $this->cp["CODE"]->SetValue($this->CODE->GetValue(true));
-        if (!is_null($this->cp["IS_ACTIVE"]->GetValue()) and !strlen($this->cp["IS_ACTIVE"]->GetText()) and !is_bool($this->cp["IS_ACTIVE"]->GetValue())) 
-            $this->cp["IS_ACTIVE"]->SetValue($this->IS_ACTIVE->GetValue(true));
-        if (!is_null($this->cp["DESCRIPTION"]->GetValue()) and !strlen($this->cp["DESCRIPTION"]->GetText()) and !is_bool($this->cp["DESCRIPTION"]->GetValue())) 
-            $this->cp["DESCRIPTION"]->SetValue($this->DESCRIPTION->GetValue(true));
-        if (!is_null($this->cp["UPDATED_BY"]->GetValue()) and !strlen($this->cp["UPDATED_BY"]->GetText()) and !is_bool($this->cp["UPDATED_BY"]->GetValue())) 
-            $this->cp["UPDATED_BY"]->SetValue(CCGetSession("UserName", NULL));
-        if (!is_null($this->cp["P_ROLE_ID"]->GetValue()) and !strlen($this->cp["P_ROLE_ID"]->GetText()) and !is_bool($this->cp["P_ROLE_ID"]->GetValue())) 
-            $this->cp["P_ROLE_ID"]->SetValue($this->P_ROLE_ID->GetValue(true));
-        if (!strlen($this->cp["P_ROLE_ID"]->GetText()) and !is_bool($this->cp["P_ROLE_ID"]->GetValue(true))) 
-            $this->cp["P_ROLE_ID"]->SetText(0);
-        $this->SQL = "UPDATE P_ROLE SET CODE=UPPER('" . $this->SQLValue($this->cp["CODE"]->GetDBValue(), ccsText) . "'), IS_ACTIVE='" . $this->SQLValue($this->cp["IS_ACTIVE"]->GetDBValue(), ccsText) . "', DESCRIPTION='" . $this->SQLValue($this->cp["DESCRIPTION"]->GetDBValue(), ccsText) . "', UPDATED_DATE=sysdate, UPDATED_BY='" . $this->SQLValue($this->cp["UPDATED_BY"]->GetDBValue(), ccsText) . "' WHERE  P_ROLE_ID = " . $this->SQLValue($this->cp["P_ROLE_ID"]->GetDBValue(), ccsFloat) . "";
+        if (!is_null($this->cp["code"]->GetValue()) and !strlen($this->cp["code"]->GetText()) and !is_bool($this->cp["code"]->GetValue())) 
+            $this->cp["code"]->SetValue($this->CODE->GetValue(true));
+        if (!is_null($this->cp["is_active"]->GetValue()) and !strlen($this->cp["is_active"]->GetText()) and !is_bool($this->cp["is_active"]->GetValue())) 
+            $this->cp["is_active"]->SetValue($this->IS_ACTIVE->GetValue(true));
+        if (!is_null($this->cp["description"]->GetValue()) and !strlen($this->cp["description"]->GetText()) and !is_bool($this->cp["description"]->GetValue())) 
+            $this->cp["description"]->SetValue($this->DESCRIPTION->GetValue(true));
+        if (!is_null($this->cp["updated_by"]->GetValue()) and !strlen($this->cp["updated_by"]->GetText()) and !is_bool($this->cp["updated_by"]->GetValue())) 
+            $this->cp["updated_by"]->SetValue(CCGetSession("UserName", NULL));
+        if (!is_null($this->cp["p_role_id"]->GetValue()) and !strlen($this->cp["p_role_id"]->GetText()) and !is_bool($this->cp["p_role_id"]->GetValue())) 
+            $this->cp["p_role_id"]->SetValue($this->P_ROLE_ID->GetValue(true));
+        if (!strlen($this->cp["p_role_id"]->GetText()) and !is_bool($this->cp["p_role_id"]->GetValue(true))) 
+            $this->cp["p_role_id"]->SetText(0);
+        $this->SQL = "UPDATE p_role \n" .
+        "SET code = upper('" . $this->SQLValue($this->cp["code"]->GetDBValue(), ccsText) . "'),\n" .
+        "is_active='" . $this->SQLValue($this->cp["is_active"]->GetDBValue(), ccsText) . "', \n" .
+        "description='" . $this->SQLValue($this->cp["description"]->GetDBValue(), ccsText) . "', \n" .
+        "updated_date=current_date, \n" .
+        "updated_by='" . $this->SQLValue($this->cp["updated_by"]->GetDBValue(), ccsText) . "' \n" .
+        "where  p_role_id = " . $this->SQLValue($this->cp["p_role_id"]->GetDBValue(), ccsFloat) . "";
         $this->CCSEventResult = CCGetEvent($this->CCSEvents, "BeforeExecuteUpdate", $this->Parent);
         if($this->Errors->Count() == 0 && $this->CmdExecution) {
             $this->query($this->SQL);
@@ -1004,19 +1005,19 @@ class clsP_ROLEFormDataSource extends clsDBConn {  //P_ROLEFormDataSource Class 
     }
 //End Update Method
 
-//Delete Method @19-1BC2E4CE
+//Delete Method @19-81D73F2A
     function Delete()
     {
         global $CCSLocales;
         global $DefaultDateFormat;
         $this->CmdExecution = true;
-        $this->cp["P_ROLE_ID"] = new clsSQLParameter("ctrlP_ROLE_ID", ccsFloat, "", "", $this->P_ROLE_ID->GetValue(true), 0, false, $this->ErrorBlock);
+        $this->cp["p_role_id"] = new clsSQLParameter("ctrlP_ROLE_ID", ccsFloat, "", "", $this->P_ROLE_ID->GetValue(true), 0, false, $this->ErrorBlock);
         $this->CCSEventResult = CCGetEvent($this->CCSEvents, "BeforeBuildDelete", $this->Parent);
-        if (!is_null($this->cp["P_ROLE_ID"]->GetValue()) and !strlen($this->cp["P_ROLE_ID"]->GetText()) and !is_bool($this->cp["P_ROLE_ID"]->GetValue())) 
-            $this->cp["P_ROLE_ID"]->SetValue($this->P_ROLE_ID->GetValue(true));
-        if (!strlen($this->cp["P_ROLE_ID"]->GetText()) and !is_bool($this->cp["P_ROLE_ID"]->GetValue(true))) 
-            $this->cp["P_ROLE_ID"]->SetText(0);
-        $this->SQL = "DELETE FROM P_ROLE WHERE P_ROLE_ID = " . $this->SQLValue($this->cp["P_ROLE_ID"]->GetDBValue(), ccsFloat) . "";
+        if (!is_null($this->cp["p_role_id"]->GetValue()) and !strlen($this->cp["p_role_id"]->GetText()) and !is_bool($this->cp["p_role_id"]->GetValue())) 
+            $this->cp["p_role_id"]->SetValue($this->P_ROLE_ID->GetValue(true));
+        if (!strlen($this->cp["p_role_id"]->GetText()) and !is_bool($this->cp["p_role_id"]->GetValue(true))) 
+            $this->cp["p_role_id"]->SetText(0);
+        $this->SQL = "DELETE FROM p_role WHERE p_role_id = " . $this->SQLValue($this->cp["p_role_id"]->GetDBValue(), ccsFloat) . "";
         $this->CCSEventResult = CCGetEvent($this->CCSEvents, "BeforeExecuteDelete", $this->Parent);
         if($this->Errors->Count() == 0 && $this->CmdExecution) {
             $this->query($this->SQL);
@@ -1026,8 +1027,6 @@ class clsP_ROLEFormDataSource extends clsDBConn {  //P_ROLEFormDataSource Class 
 //End Delete Method
 
 } //End P_ROLEFormDataSource Class @19-FCB6E20C
-
-
 
 //Initialize Page @1-6445C180
 // Variables
