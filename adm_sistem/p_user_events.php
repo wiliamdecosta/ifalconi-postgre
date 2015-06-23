@@ -92,8 +92,7 @@ function P_USERForm_Button_Reset_OnClick(& $sender)
 // -------------------------
     // Write your own code here.
 	$dbConn = new clsDBConn();
-	$query = "UPDATE p_user SET use_pwd='" . md5(CCGetFromPost("USER_NAME", "-")) . "' WHERE p_user_id=" . CCGetFromGet("P_USER_ID", "0");
-
+	$query = "UPDATE p_user SET user_pwd = '" . md5(CCGetFromPost("USER_NAME", "-")) . "' WHERE p_user_id=" . CCGetFromGet("p_user_id", "0");
 	$dbConn->query($query);
 	$dbConn->close();
 
