@@ -33,12 +33,12 @@ OR description ILIKE '%{s_keyword}%' " activeCollection="TableParameters">
 					<Components/>
 					<Events/>
 					<LinkParameters>
-						<LinkParameter id="124" sourceType="DataField" name="p_role_id" source="p_role_id"/>
+						<LinkParameter id="124" sourceType="DataField" name="P_ROLE_ID" source="p_role_id"/>
 					</LinkParameters>
 					<Attributes/>
 					<Features/>
 				</Link>
-				<Link id="7" visible="Yes" fieldSourceType="DBColumn" dataType="Text" html="True" hrefType="Page" urlType="Relative" preserveParameters="GET" name="P_ROLE_Insert" hrefSource="p_role.ccp" removeParameters="p_role_id" wizardThemeItem="FooterA" wizardDefaultValue="Add New" wizardUseTemplateBlock="False" PathID="P_ROLEGridP_ROLE_Insert">
+				<Link id="7" visible="Yes" fieldSourceType="DBColumn" dataType="Text" html="True" hrefType="Page" urlType="Relative" preserveParameters="GET" name="P_ROLE_Insert" hrefSource="p_role.ccp" removeParameters="P_ROLE_ID" wizardThemeItem="FooterA" wizardDefaultValue="Add New" wizardUseTemplateBlock="False" PathID="P_ROLEGridP_ROLE_Insert">
 					<Components/>
 					<Events>
 					</Events>
@@ -67,15 +67,15 @@ OR description ILIKE '%{s_keyword}%' " activeCollection="TableParameters">
 				<TableParameter id="175" conditionType="Parameter" useIsNull="False" field="description" dataType="Text" searchConditionType="Contains" parameterType="URL" logicOperator="And" parameterSource="s_keyword"/>
 			</TableParameters>
 			<JoinTables>
-				<JoinTable id="183" tableName="p_role" posLeft="10" posTop="10" posWidth="115" posHeight="180"/>
+				<JoinTable id="183" tableName="p_role" posWidth="115" posHeight="180" posLeft="10" posTop="10"/>
 </JoinTables>
 			<JoinLinks/>
 			<Fields>
 			</Fields>
 			<SPParameters/>
 			<SQLParameters>
-<SQLParameter id="184" parameterType="URL" variable="s_keyword" dataType="Text" parameterSource="s_keyword"/>
-</SQLParameters>
+				<SQLParameter id="184" parameterType="URL" variable="s_keyword" dataType="Text" parameterSource="s_keyword"/>
+			</SQLParameters>
 			<SecurityGroups/>
 			<Attributes/>
 			<Features/>
@@ -116,7 +116,7 @@ OR description ILIKE '%{s_keyword}%' " activeCollection="TableParameters">
 			<Attributes/>
 			<Features/>
 		</Record>
-		<Record id="19" sourceType="Table" urlType="Relative" secured="False" allowInsert="True" allowUpdate="True" allowDelete="True" validateData="True" preserveParameters="GET" returnValueType="Number" returnValueTypeForDelete="Number" returnValueTypeForInsert="Number" returnValueTypeForUpdate="Number" connection="Conn" name="P_ROLEForm" errorSummator="Error" wizardCaption="Add/Edit P APP ROLE " wizardFormMethod="post" PathID="P_ROLEForm" activeCollection="ISQLParameters" customInsertType="SQL" customUpdateType="SQL" customDeleteType="SQL" customDelete="DELETE FROM p_role WHERE p_role_id = {p_role_id}" pasteAsReplace="pasteAsReplace" pasteActions="pasteActions" parameterTypeListName="ParameterTypeList" customInsert="INSERT INTO p_role(code, is_active, description, created_by, creation_date, updated_date, updated_by, p_role_id) 
+		<Record id="19" sourceType="Table" urlType="Relative" secured="False" allowInsert="True" allowUpdate="True" allowDelete="True" validateData="True" preserveParameters="GET" returnValueType="Number" returnValueTypeForDelete="Number" returnValueTypeForInsert="Number" returnValueTypeForUpdate="Number" connection="Conn" name="P_ROLEForm" errorSummator="Error" wizardCaption="Add/Edit P APP ROLE " wizardFormMethod="post" PathID="P_ROLEForm" activeCollection="TableParameters" customInsertType="SQL" customUpdateType="SQL" customDeleteType="SQL" customDelete="DELETE FROM p_role WHERE p_role_id = {p_role_id}" pasteAsReplace="pasteAsReplace" pasteActions="pasteActions" parameterTypeListName="ParameterTypeList" customInsert="INSERT INTO p_role(code, is_active, description, created_by, creation_date, updated_date, updated_by, p_role_id) 
 VALUES(upper('{code}'), '{is_active}', '{description}', '{created_by}', current_date, current_date, '{updated_by}', generate_id('ifl','p_role','p_role_id'))" customUpdate="UPDATE p_role 
 SET code = upper('{code}'),
 is_active='{is_active}', 
@@ -217,7 +217,7 @@ where  p_role_id = {p_role_id}" dataSource="p_role">
 			<Events>
 			</Events>
 			<TableParameters>
-				<TableParameter id="178" conditionType="Parameter" useIsNull="False" field="p_role_id" dataType="Float" searchConditionType="Equal" parameterType="URL" logicOperator="And" parameterSource="p_role_id"/>
+				<TableParameter id="178" conditionType="Parameter" useIsNull="False" field="p_role_id" dataType="Float" searchConditionType="Equal" parameterType="URL" logicOperator="And" parameterSource="P_ROLE_ID"/>
 			</TableParameters>
 			<SPParameters/>
 			<SQLParameters>

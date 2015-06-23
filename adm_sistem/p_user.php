@@ -96,7 +96,7 @@ class clsGridP_USERGrid { //P_USERGrid class @2-289366EE
     }
 //End Initialize Method
 
-//Show Method @2-DC280CE7
+//Show Method @2-1581112B
     function Show()
     {
         global $Tpl;
@@ -139,7 +139,7 @@ class clsGridP_USERGrid { //P_USERGrid class @2-289366EE
                 }
                 $Tpl->block_path = $ParentPath . "/" . $GridBlock . "/Row";
                 $this->DLink->Parameters = CCGetQueryString("QueryString", array("FLAG", "ccsForm"));
-                $this->DLink->Parameters = CCAddParam($this->DLink->Parameters, "p_user_id", $this->DataSource->f("p_user_id"));
+                $this->DLink->Parameters = CCAddParam($this->DLink->Parameters, "P_USER_ID", $this->DataSource->f("p_user_id"));
                 $this->EMAIL_ADDRESS->SetValue($this->DataSource->EMAIL_ADDRESS->GetValue());
                 $this->USER_STATUS->SetValue($this->DataSource->USER_STATUS->GetValue());
                 $this->P_USER_ID->SetValue($this->DataSource->P_USER_ID->GetValue());
@@ -601,14 +601,14 @@ class clsRecordP_USERForm { //P_USERForm Class @28-548D1A0F
     }
 //End Class_Initialize Event
 
-//Initialize Method @28-487D5E1B
+//Initialize Method @28-639D859B
     function Initialize()
     {
 
         if(!$this->Visible)
             return;
 
-        $this->DataSource->Parameters["urlp_user_id"] = CCGetFromGet("p_user_id", NULL);
+        $this->DataSource->Parameters["urlP_USER_ID"] = CCGetFromGet("P_USER_ID", NULL);
     }
 //End Initialize Method
 
@@ -997,13 +997,13 @@ class clsP_USERFormDataSource extends clsDBConn {  //P_USERFormDataSource Class 
     }
 //End DataSourceClass_Initialize Event
 
-//Prepare Method @28-C798D7C8
+//Prepare Method @28-D35AA74A
     function Prepare()
     {
         global $CCSLocales;
         global $DefaultDateFormat;
         $this->wp = new clsSQLParameters($this->ErrorBlock);
-        $this->wp->AddParameter("1", "urlp_user_id", ccsFloat, "", "", $this->Parameters["urlp_user_id"], "", false);
+        $this->wp->AddParameter("1", "urlP_USER_ID", ccsFloat, "", "", $this->Parameters["urlP_USER_ID"], "", false);
         $this->AllParametersSet = $this->wp->AllParamsSet();
         $this->wp->Criterion[1] = $this->wp->Operation(opEqual, "p_user_id", $this->wp->GetDBValue("1"), $this->ToSQL($this->wp->GetDBValue("1"), ccsFloat),false);
         $this->Where = 

@@ -94,7 +94,7 @@ class clsGridP_ROLEGrid { //P_ROLEGrid class @2-ECAD58B3
     }
 //End Initialize Method
 
-//Show Method @2-390A1470
+//Show Method @2-83FDECE7
     function Show()
     {
         global $Tpl;
@@ -137,7 +137,7 @@ class clsGridP_ROLEGrid { //P_ROLEGrid class @2-ECAD58B3
                 $this->CODE->SetValue($this->DataSource->CODE->GetValue());
                 $this->DESCRIPTION->SetValue($this->DataSource->DESCRIPTION->GetValue());
                 $this->DLink->Parameters = CCGetQueryString("QueryString", array("FLAG", "ccsForm"));
-                $this->DLink->Parameters = CCAddParam($this->DLink->Parameters, "p_role_id", $this->DataSource->f("p_role_id"));
+                $this->DLink->Parameters = CCAddParam($this->DLink->Parameters, "P_ROLE_ID", $this->DataSource->f("p_role_id"));
                 $this->P_ROLE_ID->SetValue($this->DataSource->P_ROLE_ID->GetValue());
                 $this->Attributes->SetValue("rowNumber", $this->RowNumber);
                 $this->CCSEventResult = CCGetEvent($this->CCSEvents, "BeforeShowRow", $this);
@@ -171,7 +171,7 @@ class clsGridP_ROLEGrid { //P_ROLEGrid class @2-ECAD58B3
         if ($this->Navigator->TotalPages <= 1) {
             $this->Navigator->Visible = false;
         }
-        $this->P_ROLE_Insert->Parameters = CCGetQueryString("QueryString", array("p_role_id", "ccsForm"));
+        $this->P_ROLE_Insert->Parameters = CCGetQueryString("QueryString", array("P_ROLE_ID", "ccsForm"));
         $this->P_ROLE_Insert->Parameters = CCAddParam($this->P_ROLE_Insert->Parameters, "FLAG", "ADD");
         $this->Navigator->Show();
         $this->P_ROLE_Insert->Show();
@@ -577,14 +577,14 @@ class clsRecordP_ROLEForm { //P_ROLEForm Class @19-90B32452
     }
 //End Class_Initialize Event
 
-//Initialize Method @19-B7053FAD
+//Initialize Method @19-9CE5E42D
     function Initialize()
     {
 
         if(!$this->Visible)
             return;
 
-        $this->DataSource->Parameters["urlp_role_id"] = CCGetFromGet("p_role_id", NULL);
+        $this->DataSource->Parameters["urlP_ROLE_ID"] = CCGetFromGet("P_ROLE_ID", NULL);
     }
 //End Initialize Method
 
@@ -894,13 +894,13 @@ class clsP_ROLEFormDataSource extends clsDBConn {  //P_ROLEFormDataSource Class 
     }
 //End DataSourceClass_Initialize Event
 
-//Prepare Method @19-92BA5D3F
+//Prepare Method @19-86782DBD
     function Prepare()
     {
         global $CCSLocales;
         global $DefaultDateFormat;
         $this->wp = new clsSQLParameters($this->ErrorBlock);
-        $this->wp->AddParameter("1", "urlp_role_id", ccsFloat, "", "", $this->Parameters["urlp_role_id"], "", false);
+        $this->wp->AddParameter("1", "urlP_ROLE_ID", ccsFloat, "", "", $this->Parameters["urlP_ROLE_ID"], "", false);
         $this->AllParametersSet = $this->wp->AllParamsSet();
         $this->wp->Criterion[1] = $this->wp->Operation(opEqual, "p_role_id", $this->wp->GetDBValue("1"), $this->ToSQL($this->wp->GetDBValue("1"), ccsFloat),false);
         $this->Where = 

@@ -22,12 +22,12 @@ ORDER BY p_user_id" orderBy="P_USER_ID" parameterTypeListName="ParameterTypeList
 					<Components/>
 					<Events/>
 					<LinkParameters>
-						<LinkParameter id="124" sourceType="DataField" name="p_user_id" source="p_user_id"/>
+						<LinkParameter id="124" sourceType="DataField" name="P_USER_ID" source="p_user_id"/>
 					</LinkParameters>
 					<Attributes/>
 					<Features/>
 				</Link>
-				<Link id="7" visible="Yes" fieldSourceType="DBColumn" dataType="Text" html="True" hrefType="Page" urlType="Relative" preserveParameters="GET" name="P_USER_Insert" hrefSource="p_user.ccp" wizardThemeItem="FooterA" wizardDefaultValue="Add New" wizardUseTemplateBlock="False" PathID="P_USERGridP_USER_Insert" removeParameters="p_user_id;FLAG;">
+				<Link id="7" visible="Yes" fieldSourceType="DBColumn" dataType="Text" html="True" hrefType="Page" urlType="Relative" preserveParameters="GET" name="P_USER_Insert" hrefSource="p_user.ccp" wizardThemeItem="FooterA" wizardDefaultValue="Add New" wizardUseTemplateBlock="False" PathID="P_USERGridP_USER_Insert" removeParameters="P_USER_ID;FLAG;">
 					<Components/>
 					<Events>
 					</Events>
@@ -127,7 +127,7 @@ ORDER BY p_user_id" orderBy="P_USER_ID" parameterTypeListName="ParameterTypeList
 			<Attributes/>
 			<Features/>
 		</Record>
-		<Record id="28" sourceType="Table" urlType="Relative" secured="False" allowInsert="True" allowUpdate="True" allowDelete="True" validateData="True" preserveParameters="GET" returnValueType="Number" returnValueTypeForDelete="Number" returnValueTypeForInsert="Number" returnValueTypeForUpdate="Number" connection="Conn" name="P_USERForm" errorSummator="Error" wizardCaption="Add/Edit P App User " wizardFormMethod="post" PathID="P_USERForm" activeCollection="USQLParameters" pasteAsReplace="pasteAsReplace" pasteActions="pasteActions" customInsertType="SQL" parameterTypeListName="ParameterTypeList" customUpdateType="SQL" customUpdate="UPDATE p_user SET 
+		<Record id="28" sourceType="Table" urlType="Relative" secured="False" allowInsert="True" allowUpdate="True" allowDelete="True" validateData="True" preserveParameters="GET" returnValueType="Number" returnValueTypeForDelete="Number" returnValueTypeForInsert="Number" returnValueTypeForUpdate="Number" connection="Conn" name="P_USERForm" errorSummator="Error" wizardCaption="Add/Edit P App User " wizardFormMethod="post" PathID="P_USERForm" activeCollection="TableParameters" pasteAsReplace="pasteAsReplace" pasteActions="pasteActions" customInsertType="SQL" parameterTypeListName="ParameterTypeList" customUpdateType="SQL" customUpdate="UPDATE p_user SET 
 description='{description}',
 full_name='{full_name}',  
 is_new_user='{is_new_user}', 
@@ -303,7 +303,7 @@ values( generate_id('','p_user','p_user_id'), '{user_name}', '{user_pwd}', '{des
 			<Events>
 			</Events>
 			<TableParameters>
-				<TableParameter id="220" conditionType="Parameter" useIsNull="False" field="p_user_id" dataType="Float" searchConditionType="Equal" parameterType="URL" logicOperator="And" parameterSource="p_user_id"/>
+				<TableParameter id="220" conditionType="Parameter" useIsNull="False" field="p_user_id" dataType="Float" searchConditionType="Equal" parameterType="URL" logicOperator="And" parameterSource="P_USER_ID"/>
 			</TableParameters>
 			<SPParameters/>
 			<SQLParameters>

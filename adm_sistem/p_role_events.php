@@ -46,7 +46,7 @@ function P_ROLEGrid_BeforeShowRow(& $sender)
 
     if ($selected_id<0 && $add_flag!="ADD") {
     	$selected_id = $Component->DataSource->P_ROLE_ID->GetValue();
-        $P_ROLEForm->DataSource->Parameters["urlp_role_id"] = $selected_id;
+        $P_ROLEForm->DataSource->Parameters["urlP_ROLE_ID"] = $selected_id;
         $P_ROLEForm->DataSource->Prepare();
         $P_ROLEForm->EditMode = $P_ROLEForm->DataSource->AllParametersSet;
         
@@ -92,7 +92,7 @@ function Page_OnInitializeView(& $sender)
     global $selected_id;
     global $add_flag;
     $selected_id = -1;
-    $selected_id=CCGetFromGet("p_role_id", $selected_id);
+    $selected_id=CCGetFromGet("P_ROLE_ID", $selected_id);
     $add_flag=CCGetFromGet("FLAG", "NONE");
 // -------------------------
 //End Custom Code

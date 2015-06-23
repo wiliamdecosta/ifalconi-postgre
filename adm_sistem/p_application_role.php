@@ -276,39 +276,38 @@ class clsP_APPROLEFormDataSource extends clsDBConn {  //P_APPROLEFormDataSource 
     }
 //End DataSourceClass_Initialize Event
 
-//Prepare Method @72-0931BD33
+//Prepare Method @72-A9924D0D
     function Prepare()
     {
         global $CCSLocales;
         global $DefaultDateFormat;
         $this->wp = new clsSQLParameters($this->ErrorBlock);
-        $this->wp->AddParameter("1", "urlP_APPLICATION_ROLE_ID", ccsFloat, "", "", $this->Parameters["urlP_APPLICATION_ROLE_ID"], "", false);
+        $this->wp->AddParameter("1", "urlP_APPLICATION_ROLE_ID", ccsFloat, "", "", $this->Parameters["urlP_APPLICATION_ROLE_ID"], 0, false);
         $this->AllParametersSet = $this->wp->AllParamsSet();
-        $this->wp->Criterion[1] = $this->wp->Operation(opEqual, "P_APPLICATION_ROLE_ID", $this->wp->GetDBValue("1"), $this->ToSQL($this->wp->GetDBValue("1"), ccsFloat),false);
-        $this->Where = 
-             $this->wp->Criterion[1];
     }
 //End Prepare Method
 
-//Open Method @72-9A25D643
+//Open Method @72-2274B43C
     function Open()
     {
         $this->CCSEventResult = CCGetEvent($this->CCSEvents, "BeforeBuildSelect", $this->Parent);
-        $this->SQL = "SELECT * \n\n" .
-        "FROM V_P_APPLICATION_ROLE {SQL_Where} {SQL_OrderBy}";
+        $this->SQL = "SELECT * \n" .
+        "FROM \"v_p_application_role\"\n" .
+        "WHERE \"p_application_role_id\" = " . $this->SQLValue($this->wp->GetDBValue("1"), ccsFloat) . " ";
+        $this->Order = "";
         $this->CCSEventResult = CCGetEvent($this->CCSEvents, "BeforeExecuteSelect", $this->Parent);
         $this->query(CCBuildSQL($this->SQL, $this->Where, $this->Order));
         $this->CCSEventResult = CCGetEvent($this->CCSEvents, "AfterExecuteSelect", $this->Parent);
     }
 //End Open Method
 
-//SetValues Method @72-CF669346
+//SetValues Method @72-F24C60AD
     function SetValues()
     {
-        $this->P_APPLICATION_ROLE_ID->SetDBValue(trim($this->f("P_APPLICATION_ROLE_ID")));
-        $this->P_ROLE_ID->SetDBValue(trim($this->f("P_ROLE_ID")));
-        $this->APPLICATION_CODE->SetDBValue($this->f("APPLICATION_CODE"));
-        $this->P_APPLICATION_ID->SetDBValue(trim($this->f("P_APPLICATION_ID")));
+        $this->P_APPLICATION_ROLE_ID->SetDBValue(trim($this->f("p_application_role_id")));
+        $this->P_ROLE_ID->SetDBValue(trim($this->f("p_role_id")));
+        $this->APPLICATION_CODE->SetDBValue($this->f("application_code"));
+        $this->P_APPLICATION_ID->SetDBValue(trim($this->f("p_application_id")));
     }
 //End SetValues Method
 
@@ -364,7 +363,7 @@ class clsEditableGridP_APPROLEGrid { //P_APPROLEGrid Class @105-AE374D8D
     // Class variables
 //End Variables
 
-//Class_Initialize Event @105-0A40AABA
+//Class_Initialize Event @105-7669B37D
     function clsEditableGridP_APPROLEGrid($RelativePath, & $Parent)
     {
 
@@ -413,12 +412,13 @@ class clsEditableGridP_APPROLEGrid { //P_APPROLEGrid Class @105-AE374D8D
         $Method = $this->FormSubmitted ? ccsPost : ccsGet;
 
         $this->P_APPLICATION_ID = & new clsControl(ccsListBox, "P_APPLICATION_ID", "P APPLICATION ID", ccsFloat, "", NULL, $this);
-        $this->P_APPLICATION_ID->DSType = dsTable;
+        $this->P_APPLICATION_ID->DSType = dsSQL;
         $this->P_APPLICATION_ID->DataSource = new clsDBConn();
         $this->P_APPLICATION_ID->ds = & $this->P_APPLICATION_ID->DataSource;
+        list($this->P_APPLICATION_ID->BoundColumn, $this->P_APPLICATION_ID->TextColumn, $this->P_APPLICATION_ID->DBFormat) = array("p_application_id", "code", "");
         $this->P_APPLICATION_ID->DataSource->SQL = "SELECT * \n" .
-"FROM P_APPLICATION {SQL_Where} {SQL_OrderBy}";
-        list($this->P_APPLICATION_ID->BoundColumn, $this->P_APPLICATION_ID->TextColumn, $this->P_APPLICATION_ID->DBFormat) = array("P_APPLICATION_ID", "CODE", "");
+        "FROM p_application";
+        $this->P_APPLICATION_ID->DataSource->Order = "";
         $this->CheckBox_Delete_Panel = & new clsPanel("CheckBox_Delete_Panel", $this);
         $this->CheckBox_Delete = & new clsControl(ccsCheckBox, "CheckBox_Delete", "CheckBox_Delete", ccsBoolean, $CCSLocales->GetFormatInfo("BooleanFormat"), NULL, $this);
         $this->CheckBox_Delete->CheckedValue = true;
@@ -748,7 +748,7 @@ class clsEditableGridP_APPROLEGrid { //P_APPROLEGrid Class @105-AE374D8D
     }
 //End GetFormState Method
 
-//Show Method @105-A4E1A9F8
+//Show Method @105-10310CA0
     function Show()
     {
         global $Tpl;
@@ -808,7 +808,7 @@ class clsEditableGridP_APPROLEGrid { //P_APPROLEGrid Class @105-AE374D8D
                     $this->P_APPLICATION_ROLE_ID->SetValue($this->DataSource->P_APPLICATION_ROLE_ID->GetValue());
                     $this->P_ROLE_ID->SetValue($this->DataSource->P_ROLE_ID->GetValue());
                     $this->DLink->Parameters = CCGetQueryString("QueryString", array("FLAG", "ccsForm"));
-                    $this->DLink->Parameters = CCAddParam($this->DLink->Parameters, "P_APPLICATION_ROLE_ID", $this->DataSource->f("P_APPLICATION_ROLE_ID"));
+                    $this->DLink->Parameters = CCAddParam($this->DLink->Parameters, "P_APPLICATION_ROLE_ID", $this->DataSource->f("p_application_role_id"));
                     $this->CREATED_BY->SetValue($this->DataSource->CREATED_BY->GetValue());
                     $this->CREATION_DATE->SetValue($this->DataSource->CREATION_DATE->GetValue());
                 } elseif ($this->FormSubmitted && $is_next_record) {
@@ -816,7 +816,7 @@ class clsEditableGridP_APPROLEGrid { //P_APPROLEGrid Class @105-AE374D8D
                     $this->CREATED_BY->SetText("");
                     $this->CREATION_DATE->SetText("");
                     $this->DLink->Parameters = CCGetQueryString("QueryString", array("FLAG", "ccsForm"));
-                    $this->DLink->Parameters = CCAddParam($this->DLink->Parameters, "P_APPLICATION_ROLE_ID", $this->DataSource->f("P_APPLICATION_ROLE_ID"));
+                    $this->DLink->Parameters = CCAddParam($this->DLink->Parameters, "P_APPLICATION_ROLE_ID", $this->DataSource->f("p_application_role_id"));
                     $this->CREATED_BY->SetValue($this->DataSource->CREATED_BY->GetValue());
                     $this->CREATION_DATE->SetValue($this->DataSource->CREATION_DATE->GetValue());
                     $this->P_APPLICATION_ID->SetText($this->FormParameters["P_APPLICATION_ID"][$this->RowNumber], $this->RowNumber);
@@ -827,18 +827,18 @@ class clsEditableGridP_APPROLEGrid { //P_APPROLEGrid Class @105-AE374D8D
                     $this->CachedColumns["P_APPLICATION_ROLE_ID"][$this->RowNumber] = "";
                     $this->P_APPLICATION_ID->SetText("");
                     $this->P_APPLICATION_ROLE_ID->SetText("");
-                    $this->P_ROLE_ID->SetText(CCGetFromGet("P_ROLE_ID", NULL));
+                    $this->P_ROLE_ID->SetText($CCSLocales->GetText("Text1"));
                     $this->rowStyle->SetText("");
                     $this->CREATED_BY->SetText("");
                     $this->CREATION_DATE->SetText("");
                     $this->DLink->Parameters = CCGetQueryString("QueryString", array("FLAG", "ccsForm"));
-                    $this->DLink->Parameters = CCAddParam($this->DLink->Parameters, "P_APPLICATION_ROLE_ID", $this->DataSource->f("P_APPLICATION_ROLE_ID"));
+                    $this->DLink->Parameters = CCAddParam($this->DLink->Parameters, "P_APPLICATION_ROLE_ID", $this->DataSource->f("p_application_role_id"));
                 } else {
                     $this->rowStyle->SetText("");
                     $this->CREATED_BY->SetText("");
                     $this->CREATION_DATE->SetText("");
                     $this->DLink->Parameters = CCGetQueryString("QueryString", array("FLAG", "ccsForm"));
-                    $this->DLink->Parameters = CCAddParam($this->DLink->Parameters, "P_APPLICATION_ROLE_ID", $this->DataSource->f("P_APPLICATION_ROLE_ID"));
+                    $this->DLink->Parameters = CCAddParam($this->DLink->Parameters, "P_APPLICATION_ROLE_ID", $this->DataSource->f("p_application_role_id"));
                     $this->P_APPLICATION_ID->SetText($this->FormParameters["P_APPLICATION_ID"][$this->RowNumber], $this->RowNumber);
                     $this->CheckBox_Delete->SetText($this->FormParameters["CheckBox_Delete"][$this->RowNumber], $this->RowNumber);
                     $this->P_APPLICATION_ROLE_ID->SetText($this->FormParameters["P_APPLICATION_ROLE_ID"][$this->RowNumber], $this->RowNumber);
@@ -988,28 +988,27 @@ class clsP_APPROLEGridDataSource extends clsDBConn {  //P_APPROLEGridDataSource 
     }
 //End SetOrder Method
 
-//Prepare Method @105-48A9CFDF
+//Prepare Method @105-4D04DF95
     function Prepare()
     {
         global $CCSLocales;
         global $DefaultDateFormat;
         $this->wp = new clsSQLParameters($this->ErrorBlock);
-        $this->wp->AddParameter("1", "urlP_ROLE_ID", ccsFloat, "", "", $this->Parameters["urlP_ROLE_ID"], "", false);
+        $this->wp->AddParameter("1", "urlP_ROLE_ID", ccsFloat, "", "", $this->Parameters["urlP_ROLE_ID"], 0, false);
         $this->AllParametersSet = $this->wp->AllParamsSet();
-        $this->wp->Criterion[1] = $this->wp->Operation(opEqual, "P_ROLE_ID", $this->wp->GetDBValue("1"), $this->ToSQL($this->wp->GetDBValue("1"), ccsFloat),false);
-        $this->Where = 
-             $this->wp->Criterion[1];
     }
 //End Prepare Method
 
-//Open Method @105-22E2A392
+//Open Method @105-670466D2
     function Open()
     {
         $this->CCSEventResult = CCGetEvent($this->CCSEvents, "BeforeBuildSelect", $this->Parent);
-        $this->CountSQL = "SELECT COUNT(*)\n\n" .
-        "FROM P_APPLICATION_ROLE";
-        $this->SQL = "SELECT * \n\n" .
-        "FROM P_APPLICATION_ROLE {SQL_Where} {SQL_OrderBy}";
+        $this->CountSQL = "SELECT COUNT(*) FROM (SELECT * \n" .
+        "FROM \"p_application_role\"\n" .
+        "WHERE \"p_role_id\" = " . $this->SQLValue($this->wp->GetDBValue("1"), ccsFloat) . " ) cnt";
+        $this->SQL = "SELECT * \n" .
+        "FROM \"p_application_role\"\n" .
+        "WHERE \"p_role_id\" = " . $this->SQLValue($this->wp->GetDBValue("1"), ccsFloat) . " ";
         $this->CCSEventResult = CCGetEvent($this->CCSEvents, "BeforeExecuteSelect", $this->Parent);
         if ($this->CountSQL) 
             $this->RecordsCount = CCGetDBValue(CCBuildSQL($this->CountSQL, $this->Where, ""), $this);
@@ -1021,15 +1020,15 @@ class clsP_APPROLEGridDataSource extends clsDBConn {  //P_APPROLEGridDataSource 
     }
 //End Open Method
 
-//SetValues Method @105-4AE565B1
+//SetValues Method @105-8DC0B17E
     function SetValues()
     {
         $this->CachedColumns["P_APPLICATION_ROLE_ID"] = $this->f("P_APPLICATION_ROLE_ID");
-        $this->P_APPLICATION_ID->SetDBValue(trim($this->f("P_APPLICATION_ID")));
-        $this->P_APPLICATION_ROLE_ID->SetDBValue(trim($this->f("P_APPLICATION_ROLE_ID")));
-        $this->P_ROLE_ID->SetDBValue(trim($this->f("P_ROLE_ID")));
-        $this->CREATED_BY->SetDBValue($this->f("CREATED_BY"));
-        $this->CREATION_DATE->SetDBValue(trim($this->f("CREATION_DATE")));
+        $this->P_APPLICATION_ID->SetDBValue(trim($this->f("p_application_id")));
+        $this->P_APPLICATION_ROLE_ID->SetDBValue(trim($this->f("p_application_role_id")));
+        $this->P_ROLE_ID->SetDBValue(trim($this->f("p_role_id")));
+        $this->CREATED_BY->SetDBValue($this->f("created_by"));
+        $this->CREATION_DATE->SetDBValue(trim($this->f("creation_date")));
     }
 //End SetValues Method
 
