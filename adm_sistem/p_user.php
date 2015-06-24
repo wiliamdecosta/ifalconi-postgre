@@ -96,7 +96,7 @@ class clsGridP_USERGrid { //P_USERGrid class @2-289366EE
     }
 //End Initialize Method
 
-//Show Method @2-1581112B
+//Show Method @2-2A83A10B
     function Show()
     {
         global $Tpl;
@@ -179,7 +179,7 @@ class clsGridP_USERGrid { //P_USERGrid class @2-289366EE
         if ($this->Navigator->TotalPages <= 1) {
             $this->Navigator->Visible = false;
         }
-        $this->P_USER_Insert->Parameters = CCGetQueryString("QueryString", array("p_user_id", "FLAG", "ccsForm"));
+        $this->P_USER_Insert->Parameters = CCGetQueryString("QueryString", array("P_USER_ID", "FLAG", "ccsForm"));
         $this->P_USER_Insert->Parameters = CCAddParam($this->P_USER_Insert->Parameters, "FLAG", "ADD");
         $this->Navigator->Show();
         $this->P_USER_Insert->Show();

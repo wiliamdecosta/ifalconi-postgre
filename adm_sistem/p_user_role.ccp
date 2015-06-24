@@ -6,7 +6,7 @@
 			<Attributes/>
 			<Features/>
 		</Label>
-		<EditableGrid id="110" urlType="Relative" secured="False" emptyRows="1" allowInsert="True" allowUpdate="True" allowDelete="True" validateData="True" preserveParameters="GET" sourceType="Table" defaultPageSize="25" returnValueType="Number" returnValueTypeForDelete="Number" returnValueTypeForInsert="Number" returnValueTypeForUpdate="Number" connection="Conn" dataSource="p_user_role" name="P_UROLEGrid" orderBy="p_user_role_id" pageSizeLimit="100" wizardCaption=" P USER ROLE " wizardGridType="Tabular" wizardAltRecord="False" wizardRecordSeparator="False" wizardNoRecords="-" PathID="P_UROLEGrid" deleteControl="CheckBox_Delete" pasteAsReplace="pasteAsReplace" pasteActions="pasteActions" activeCollection="TableParameters" parameterTypeListName="CustomTableParameterTypeList" customInsert="INSERT INTO p_user_role(p_user_role_id, p_role_id, p_user_id, creation_date, created_by ) 
+		<EditableGrid id="110" urlType="Relative" secured="False" emptyRows="1" allowInsert="True" allowUpdate="True" allowDelete="True" validateData="True" preserveParameters="GET" sourceType="Table" defaultPageSize="25" returnValueType="Number" returnValueTypeForDelete="Number" returnValueTypeForInsert="Number" returnValueTypeForUpdate="Number" connection="Conn" dataSource="p_user_role" name="P_UROLEGrid" orderBy="p_user_role_id" pageSizeLimit="100" wizardCaption=" P USER ROLE " wizardGridType="Tabular" wizardAltRecord="False" wizardRecordSeparator="False" wizardNoRecords="-" PathID="P_UROLEGrid" deleteControl="CheckBox_Delete" pasteAsReplace="pasteAsReplace" pasteActions="pasteActions" activeCollection="ISQLParameters" parameterTypeListName="CustomTableParameterTypeList" customInsert="INSERT INTO p_user_role(p_user_role_id, p_role_id, p_user_id, creation_date, created_by ) 
 VALUES(generate_id('ifl','p_user_role','p_user_role_id'),{p_role_id}, {p_user_id}, current_date,'{created_by}')" customInsertType="SQL" customUpdate="UPDATE p_user_role SET p_role_id = {p_role_id} WHERE  p_user_role_id = {p_user_role_id}" customUpdateType="SQL" activeTableType="customDelete" customDelete="DELETE FROM p_user_role WHERE  p_user_role_id = {p_user_role_id}" customDeleteType="SQL">
 			<Components>
 				<ListBox id="114" visible="Yes" fieldSourceType="DBColumn" sourceType="Table" dataType="Float" returnValueType="Number" name="P_ROLE_ID" fieldSource="p_role_id" required="True" caption="P ROLE ID" wizardCaption="P ROLE ID" wizardSize="12" wizardMaxLength="12" wizardIsPassword="False" wizardUseTemplateBlock="False" PathID="P_UROLEGridP_ROLE_ID" connection="Conn" dataSource="p_role" boundColumn="p_role_id" textColumn="code">
@@ -16,8 +16,8 @@ VALUES(generate_id('ifl','p_user_role','p_user_role_id'),{p_role_id}, {p_user_id
 					<SPParameters/>
 					<SQLParameters/>
 					<JoinTables>
-<JoinTable id="139" tableName="P_ROLE" posLeft="10" posTop="10" posWidth="115" posHeight="180"/>
-</JoinTables>
+						<JoinTable id="139" tableName="P_ROLE" posLeft="10" posTop="10" posWidth="115" posHeight="180"/>
+					</JoinTables>
 					<JoinLinks/>
 					<Fields/>
 					<Attributes/>
@@ -93,7 +93,7 @@ VALUES(generate_id('ifl','p_user_role','p_user_role_id'),{p_role_id}, {p_user_id
 			<SQLParameters/>
 			<JoinTables>
 				<JoinTable id="138" tableName="p_user_role" posLeft="10" posTop="10" posWidth="98" posHeight="136"/>
-</JoinTables>
+			</JoinTables>
 			<JoinLinks/>
 			<Fields/>
 			<PKFields>

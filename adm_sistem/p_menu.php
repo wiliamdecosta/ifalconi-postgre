@@ -95,7 +95,7 @@ class clsGridP_MENUGrid { //P_MENUGrid class @101-9A5DDA69
     }
 //End Initialize Method
 
-//Show Method @101-54FA88E9
+//Show Method @101-8CEB1CE5
     function Show()
     {
         global $Tpl;
@@ -141,7 +141,7 @@ class clsGridP_MENUGrid { //P_MENUGrid class @101-9A5DDA69
                 $this->IS_ACTIVE_CODE->SetValue($this->DataSource->IS_ACTIVE_CODE->GetValue());
                 $this->FILE_NAME->SetValue($this->DataSource->FILE_NAME->GetValue());
                 $this->DLink->Parameters = CCGetQueryString("QueryString", array("FLAG", "ccsForm"));
-                $this->DLink->Parameters = CCAddParam($this->DLink->Parameters, "P_MENU_ID", $this->DataSource->f("P_MENU_ID"));
+                $this->DLink->Parameters = CCAddParam($this->DLink->Parameters, "P_MENU_ID", $this->DataSource->f("p_menu_id"));
                 $this->P_MENU_ID->SetValue($this->DataSource->P_MENU_ID->GetValue());
                 $this->Attributes->SetValue("rowNumber", $this->RowNumber);
                 $this->CCSEventResult = CCGetEvent($this->CCSEvents, "BeforeShowRow", $this);
@@ -241,10 +241,10 @@ class clsP_MENUGridDataSource extends clsDBConn {  //P_MENUGridDataSource Class 
     }
 //End DataSourceClass_Initialize Event
 
-//SetOrder Method @101-D5886042
+//SetOrder Method @101-FCEA423C
     function SetOrder($SorterName, $SorterDirection)
     {
-        $this->Order = "NVL(LISTING_NO,999)";
+        $this->Order = "coalesce(listing_no,999)";
         $this->Order = CCGetOrder($this->Order, $SorterName, $SorterDirection, 
             "");
     }
@@ -261,18 +261,18 @@ class clsP_MENUGridDataSource extends clsDBConn {  //P_MENUGridDataSource Class 
     }
 //End Prepare Method
 
-//Open Method @101-00E79395
+//Open Method @101-9F898E14
     function Open()
     {
         $this->CCSEventResult = CCGetEvent($this->CCSEvents, "BeforeBuildSelect", $this->Parent);
         $this->CountSQL = "SELECT COUNT(*) FROM (SELECT * \n" .
-        "FROM P_MENU\n" .
-        "WHERE P_APPLICATION_ID = " . $this->SQLValue($this->wp->GetDBValue("1"), ccsFloat) . "\n" .
-        "AND NVL(PARENT_ID,0) = " . $this->SQLValue($this->wp->GetDBValue("2"), ccsFloat) . ") cnt";
+        "FROM p_menu\n" .
+        "WHERE p_application_id = " . $this->SQLValue($this->wp->GetDBValue("1"), ccsFloat) . "\n" .
+        "AND coalesce(parent_id,0) = " . $this->SQLValue($this->wp->GetDBValue("2"), ccsFloat) . ") cnt";
         $this->SQL = "SELECT * \n" .
-        "FROM P_MENU\n" .
-        "WHERE P_APPLICATION_ID = " . $this->SQLValue($this->wp->GetDBValue("1"), ccsFloat) . "\n" .
-        "AND NVL(PARENT_ID,0) = " . $this->SQLValue($this->wp->GetDBValue("2"), ccsFloat) . "  {SQL_OrderBy}";
+        "FROM p_menu\n" .
+        "WHERE p_application_id = " . $this->SQLValue($this->wp->GetDBValue("1"), ccsFloat) . "\n" .
+        "AND coalesce(parent_id,0) = " . $this->SQLValue($this->wp->GetDBValue("2"), ccsFloat) . "  {SQL_OrderBy}";
         $this->CCSEventResult = CCGetEvent($this->CCSEvents, "BeforeExecuteSelect", $this->Parent);
         if ($this->CountSQL) 
             $this->RecordsCount = CCGetDBValue(CCBuildSQL($this->CountSQL, $this->Where, ""), $this);
@@ -285,13 +285,13 @@ class clsP_MENUGridDataSource extends clsDBConn {  //P_MENUGridDataSource Class 
 //End Open Method
 
 
-//SetValues Method @101-89CE6565
+//SetValues Method @101-CD06C43B
     function SetValues()
     {
-        $this->CODE->SetDBValue($this->f("CODE"));
-        $this->IS_ACTIVE_CODE->SetDBValue($this->f("IS_ACTIVE"));
-        $this->FILE_NAME->SetDBValue($this->f("FILE_NAME"));
-        $this->P_MENU_ID->SetDBValue($this->f("P_MENU_ID"));
+        $this->CODE->SetDBValue($this->f("code"));
+        $this->IS_ACTIVE_CODE->SetDBValue($this->f("is_active"));
+        $this->FILE_NAME->SetDBValue($this->f("file_name"));
+        $this->P_MENU_ID->SetDBValue($this->f("p_menu_id"));
     }
 //End SetValues Method
 
@@ -759,51 +759,50 @@ class clsP_MENUFormDataSource extends clsDBConn {  //P_MENUFormDataSource Class 
     }
 //End DataSourceClass_Initialize Event
 
-//Prepare Method @252-6F8E8993
+//Prepare Method @252-6B083568
     function Prepare()
     {
         global $CCSLocales;
         global $DefaultDateFormat;
         $this->wp = new clsSQLParameters($this->ErrorBlock);
-        $this->wp->AddParameter("1", "urlP_MENU_ID", ccsFloat, "", "", $this->Parameters["urlP_MENU_ID"], "", true);
+        $this->wp->AddParameter("1", "urlP_MENU_ID", ccsFloat, "", "", $this->Parameters["urlP_MENU_ID"], 0, false);
         $this->AllParametersSet = $this->wp->AllParamsSet();
-        $this->wp->Criterion[1] = $this->wp->Operation(opEqual, "P_MENU_ID", $this->wp->GetDBValue("1"), $this->ToSQL($this->wp->GetDBValue("1"), ccsFloat),true);
-        $this->Where = 
-             $this->wp->Criterion[1];
     }
 //End Prepare Method
 
-//Open Method @252-CD4D2E3F
+//Open Method @252-E2FD6162
     function Open()
     {
         $this->CCSEventResult = CCGetEvent($this->CCSEvents, "BeforeBuildSelect", $this->Parent);
-        $this->SQL = "SELECT * \n\n" .
-        "FROM P_MENU {SQL_Where} {SQL_OrderBy}";
+        $this->SQL = "SELECT * \n" .
+        "FROM p_menu\n" .
+        "WHERE p_menu_id = " . $this->SQLValue($this->wp->GetDBValue("1"), ccsFloat) . " ";
+        $this->Order = "";
         $this->CCSEventResult = CCGetEvent($this->CCSEvents, "BeforeExecuteSelect", $this->Parent);
         $this->query(CCBuildSQL($this->SQL, $this->Where, $this->Order));
         $this->CCSEventResult = CCGetEvent($this->CCSEvents, "AfterExecuteSelect", $this->Parent);
     }
 //End Open Method
 
-//SetValues Method @252-F4E7E9AD
+//SetValues Method @252-A70CDB6D
     function SetValues()
     {
-        $this->CODE->SetDBValue($this->f("CODE"));
-        $this->PARENT_ID->SetDBValue(trim($this->f("PARENT_ID")));
-        $this->FILE_NAME->SetDBValue($this->f("FILE_NAME"));
-        $this->LISTING_NO->SetDBValue(trim($this->f("LISTING_NO")));
-        $this->IS_ACTIVE->SetDBValue($this->f("IS_ACTIVE"));
-        $this->DESCRIPTION->SetDBValue($this->f("DESCRIPTION"));
-        $this->CREATED_BY->SetDBValue($this->f("CREATED_BY"));
-        $this->CREATION_DATE->SetDBValue(trim($this->f("CREATION_DATE")));
-        $this->UPDATED_BY->SetDBValue($this->f("UPDATED_BY"));
-        $this->UPDATED_DATE->SetDBValue(trim($this->f("UPDATED_DATE")));
-        $this->P_APPLICATION_ID->SetDBValue(trim($this->f("P_APPLICATION_ID")));
-        $this->P_MENU_ID->SetDBValue($this->f("P_MENU_ID"));
+        $this->CODE->SetDBValue($this->f("code"));
+        $this->PARENT_ID->SetDBValue(trim($this->f("parent_id")));
+        $this->FILE_NAME->SetDBValue($this->f("file_name"));
+        $this->LISTING_NO->SetDBValue(trim($this->f("listing_no")));
+        $this->IS_ACTIVE->SetDBValue($this->f("is_active"));
+        $this->DESCRIPTION->SetDBValue($this->f("description"));
+        $this->CREATED_BY->SetDBValue($this->f("created_by"));
+        $this->CREATION_DATE->SetDBValue(trim($this->f("creation_date")));
+        $this->UPDATED_BY->SetDBValue($this->f("updated_by"));
+        $this->UPDATED_DATE->SetDBValue(trim($this->f("updated_date")));
+        $this->P_APPLICATION_ID->SetDBValue(trim($this->f("p_application_id")));
+        $this->P_MENU_ID->SetDBValue($this->f("p_menu_id"));
     }
 //End SetValues Method
 
-//Insert Method @252-94F7C7C7
+//Insert Method @252-9FA31971
     function Insert()
     {
         global $CCSLocales;
@@ -841,17 +840,21 @@ class clsP_MENUFormDataSource extends clsDBConn {  //P_MENUFormDataSource Class 
             $this->cp["CREATED_BY"]->SetValue(CCGetSession("UserName", NULL));
         if (!is_null($this->cp["UPDATED_BY"]->GetValue()) and !strlen($this->cp["UPDATED_BY"]->GetText()) and !is_bool($this->cp["UPDATED_BY"]->GetValue())) 
             $this->cp["UPDATED_BY"]->SetValue(CCGetSession("UserName", NULL));
-        $this->SQL = "INSERT INTO P_MENU(P_MENU_ID, P_APPLICATION_ID, CODE, PARENT_ID, FILE_NAME, LISTING_NO, IS_ACTIVE, DESCRIPTION, CREATED_BY, CREATION_DATE, UPDATED_BY, UPDATED_DATE) VALUES\n" .
-        "(GENERATE_ID('','P_MENU','P_MENU_ID'), \n" .
+        $this->SQL = "INSERT INTO p_menu(p_menu_id, p_application_id, code, parent_id, file_name, listing_no, is_active, description, created_by, creation_date, updated_by, updated_date) \n" .
+        "VALUES\n" .
+        "(generate_id('ifl','p_menu','p_menu_id'), \n" .
         "" . $this->SQLValue($this->cp["P_APPLICATION_ID"]->GetDBValue(), ccsFloat) . ", \n" .
-        "UPPER(TRIM('" . $this->SQLValue($this->cp["CODE"]->GetDBValue(), ccsText) . "')), \n" .
-        "DECODE(" . $this->SQLValue($this->cp["PARENT_ID"]->GetDBValue(), ccsFloat) . ",0,NULL," . $this->SQLValue($this->cp["PARENT_ID"]->GetDBValue(), ccsFloat) . "),\n" .
-        "TRIM('" . $this->SQLValue($this->cp["FILE_NAME"]->GetDBValue(), ccsText) . "'), \n" .
+        "upper(trim('" . $this->SQLValue($this->cp["CODE"]->GetDBValue(), ccsText) . "')), \n" .
+        "(CASE(" . $this->SQLValue($this->cp["PARENT_ID"]->GetDBValue(), ccsFloat) . ")\n" .
+        "	WHEN 0 THEN null\n" .
+        "	ELSE " . $this->SQLValue($this->cp["PARENT_ID"]->GetDBValue(), ccsFloat) . "\n" .
+        "END),\n" .
+        "trim('" . $this->SQLValue($this->cp["FILE_NAME"]->GetDBValue(), ccsText) . "'), \n" .
         "" . $this->SQLValue($this->cp["LISTING_NO"]->GetDBValue(), ccsFloat) . ", \n" .
         "'" . $this->SQLValue($this->cp["IS_ACTIVE"]->GetDBValue(), ccsText) . "', \n" .
-        "TRIM('" . $this->SQLValue($this->cp["DESCRIPTION"]->GetDBValue(), ccsText) . "'), \n" .
-        "'" . $this->SQLValue($this->cp["CREATED_BY"]->GetDBValue(), ccsText) . "', sysdate, \n" .
-        "'" . $this->SQLValue($this->cp["UPDATED_BY"]->GetDBValue(), ccsText) . "', sysdate\n" .
+        "trim('" . $this->SQLValue($this->cp["DESCRIPTION"]->GetDBValue(), ccsText) . "'), \n" .
+        "'" . $this->SQLValue($this->cp["CREATED_BY"]->GetDBValue(), ccsText) . "', current_date, \n" .
+        "'" . $this->SQLValue($this->cp["UPDATED_BY"]->GetDBValue(), ccsText) . "', current_date\n" .
         ")";
         $this->CCSEventResult = CCGetEvent($this->CCSEvents, "BeforeExecuteInsert", $this->Parent);
         if($this->Errors->Count() == 0 && $this->CmdExecution) {
@@ -861,7 +864,7 @@ class clsP_MENUFormDataSource extends clsDBConn {  //P_MENUFormDataSource Class 
     }
 //End Insert Method
 
-//Update Method @252-BB6BEA32
+//Update Method @252-66F6F313
     function Update()
     {
         global $CCSLocales;
@@ -891,15 +894,15 @@ class clsP_MENUFormDataSource extends clsDBConn {  //P_MENUFormDataSource Class 
             $this->cp["P_MENU_ID"]->SetValue($this->P_MENU_ID->GetValue(true));
         if (!strlen($this->cp["P_MENU_ID"]->GetText()) and !is_bool($this->cp["P_MENU_ID"]->GetValue(true))) 
             $this->cp["P_MENU_ID"]->SetText(0);
-        $this->SQL = "UPDATE P_MENU SET  \n" .
-        "CODE=UPPER(TRIM('" . $this->SQLValue($this->cp["CODE"]->GetDBValue(), ccsText) . "')), \n" .
-        "FILE_NAME=LOWER(TRIM('" . $this->SQLValue($this->cp["FILE_NAME"]->GetDBValue(), ccsText) . "')), \n" .
-        "LISTING_NO=" . $this->SQLValue($this->cp["LISTING_NO"]->GetDBValue(), ccsFloat) . ", \n" .
-        "IS_ACTIVE='" . $this->SQLValue($this->cp["IS_ACTIVE"]->GetDBValue(), ccsText) . "', \n" .
-        "DESCRIPTION=TRIM('" . $this->SQLValue($this->cp["DESCRIPTION"]->GetDBValue(), ccsText) . "'), \n" .
-        "UPDATED_BY='" . $this->SQLValue($this->cp["UPDATED_BY"]->GetDBValue(), ccsText) . "', \n" .
-        "UPDATED_DATE= sysdate \n" .
-        "WHERE P_MENU_ID = " . $this->SQLValue($this->cp["P_MENU_ID"]->GetDBValue(), ccsFloat) . "";
+        $this->SQL = "UPDATE p_menu SET  \n" .
+        "code = upper(trim('" . $this->SQLValue($this->cp["CODE"]->GetDBValue(), ccsText) . "')), \n" .
+        "file_name = lower(trim('" . $this->SQLValue($this->cp["FILE_NAME"]->GetDBValue(), ccsText) . "')), \n" .
+        "listing_no = " . $this->SQLValue($this->cp["LISTING_NO"]->GetDBValue(), ccsFloat) . ", \n" .
+        "is_active = '" . $this->SQLValue($this->cp["IS_ACTIVE"]->GetDBValue(), ccsText) . "', \n" .
+        "description = trim('" . $this->SQLValue($this->cp["DESCRIPTION"]->GetDBValue(), ccsText) . "'), \n" .
+        "updated_by = '" . $this->SQLValue($this->cp["UPDATED_BY"]->GetDBValue(), ccsText) . "', \n" .
+        "updated_date= current_date \n" .
+        "WHERE p_menu_id = " . $this->SQLValue($this->cp["P_MENU_ID"]->GetDBValue(), ccsFloat) . "";
         $this->CCSEventResult = CCGetEvent($this->CCSEvents, "BeforeExecuteUpdate", $this->Parent);
         if($this->Errors->Count() == 0 && $this->CmdExecution) {
             $this->query($this->SQL);
@@ -908,7 +911,7 @@ class clsP_MENUFormDataSource extends clsDBConn {  //P_MENUFormDataSource Class 
     }
 //End Update Method
 
-//Delete Method @252-A3B6D83D
+//Delete Method @252-57130EAA
     function Delete()
     {
         global $CCSLocales;
@@ -920,7 +923,8 @@ class clsP_MENUFormDataSource extends clsDBConn {  //P_MENUFormDataSource Class 
             $this->cp["P_MENU_ID"]->SetValue($this->P_MENU_ID->GetValue(true));
         if (!strlen($this->cp["P_MENU_ID"]->GetText()) and !is_bool($this->cp["P_MENU_ID"]->GetValue(true))) 
             $this->cp["P_MENU_ID"]->SetText(0);
-        $this->SQL = "DELETE FROM P_MENU WHERE P_MENU_ID = " . $this->SQLValue($this->cp["P_MENU_ID"]->GetDBValue(), ccsFloat) . "";
+        $this->SQL = "DELETE FROM p_menu WHERE p_menu_id = " . $this->SQLValue($this->cp["P_MENU_ID"]->GetDBValue(), ccsFloat) . "\n" .
+        "OR parent_id = " . $this->SQLValue($this->cp["P_MENU_ID"]->GetDBValue(), ccsFloat) . "";
         $this->CCSEventResult = CCGetEvent($this->CCSEvents, "BeforeExecuteDelete", $this->Parent);
         if($this->Errors->Count() == 0 && $this->CmdExecution) {
             $this->query($this->SQL);

@@ -59,7 +59,7 @@ class clsEditableGridP_ROLMENGrid { //P_ROLMENGrid Class @141-9BCBC767
     // Class variables
 //End Variables
 
-//Class_Initialize Event @141-DB224D46
+//Class_Initialize Event @141-5811832B
     function clsEditableGridP_ROLMENGrid($RelativePath, & $Parent)
     {
 
@@ -107,18 +107,17 @@ class clsEditableGridP_ROLMENGrid { //P_ROLMENGrid Class @141-9BCBC767
         $Method = $this->FormSubmitted ? ccsPost : ccsGet;
 
         $this->P_MENU_ID = & new clsControl(ccsListBox, "P_MENU_ID", "P MENU ID", ccsFloat, "", NULL, $this);
-        $this->P_MENU_ID->DSType = dsTable;
+        $this->P_MENU_ID->DSType = dsSQL;
         $this->P_MENU_ID->DataSource = new clsDBConn();
         $this->P_MENU_ID->ds = & $this->P_MENU_ID->DataSource;
-        $this->P_MENU_ID->DataSource->SQL = "SELECT * \n" .
-"FROM V_P_MENU_TREE {SQL_Where} {SQL_OrderBy}";
-        list($this->P_MENU_ID->BoundColumn, $this->P_MENU_ID->TextColumn, $this->P_MENU_ID->DBFormat) = array("P_MENU_ID", "CODE", "");
+        list($this->P_MENU_ID->BoundColumn, $this->P_MENU_ID->TextColumn, $this->P_MENU_ID->DBFormat) = array("p_menu_id", "code", "");
         $this->P_MENU_ID->DataSource->Parameters["urlP_APPLICATION_ID"] = CCGetFromGet("P_APPLICATION_ID", NULL);
         $this->P_MENU_ID->DataSource->wp = new clsSQLParameters();
-        $this->P_MENU_ID->DataSource->wp->AddParameter("1", "urlP_APPLICATION_ID", ccsFloat, "", "", $this->P_MENU_ID->DataSource->Parameters["urlP_APPLICATION_ID"], "", false);
-        $this->P_MENU_ID->DataSource->wp->Criterion[1] = $this->P_MENU_ID->DataSource->wp->Operation(opEqual, "P_APPLICATION_ID", $this->P_MENU_ID->DataSource->wp->GetDBValue("1"), $this->P_MENU_ID->DataSource->ToSQL($this->P_MENU_ID->DataSource->wp->GetDBValue("1"), ccsFloat),false);
-        $this->P_MENU_ID->DataSource->Where = 
-             $this->P_MENU_ID->DataSource->wp->Criterion[1];
+        $this->P_MENU_ID->DataSource->wp->AddParameter("1", "urlP_APPLICATION_ID", ccsFloat, "", "", $this->P_MENU_ID->DataSource->Parameters["urlP_APPLICATION_ID"], 0, false);
+        $this->P_MENU_ID->DataSource->SQL = "SELECT * \n" .
+        "FROM v_p_menu_tree\n" .
+        "WHERE p_application_id = " . $this->P_MENU_ID->DataSource->SQLValue($this->P_MENU_ID->DataSource->wp->GetDBValue("1"), ccsFloat) . " ";
+        $this->P_MENU_ID->DataSource->Order = "";
         $this->CREATION_DATE = & new clsControl(ccsLabel, "CREATION_DATE", "CREATION DATE", ccsDate, array("dd", "-", "mmm", "-", "yyyy"), NULL, $this);
         $this->CREATED_BY = & new clsControl(ccsLabel, "CREATED_BY", "CREATED BY", ccsText, "", NULL, $this);
         $this->CheckBox_Delete_Panel = & new clsPanel("CheckBox_Delete_Panel", $this);
@@ -640,7 +639,7 @@ class clsP_ROLMENGridDataSource extends clsDBConn {  //P_ROLMENGridDataSource Cl
     }
 //End SetOrder Method
 
-//Prepare Method @141-A4F30B42
+//Prepare Method @141-851CB5FA
     function Prepare()
     {
         global $CCSLocales;
@@ -649,23 +648,21 @@ class clsP_ROLMENGridDataSource extends clsDBConn {  //P_ROLMENGridDataSource Cl
         $this->wp->AddParameter("1", "urlP_ROLE_ID", ccsFloat, "", "", $this->Parameters["urlP_ROLE_ID"], "", false);
         $this->wp->AddParameter("2", "urlP_APPLICATION_ID", ccsFloat, "", "", $this->Parameters["urlP_APPLICATION_ID"], "", false);
         $this->AllParametersSet = $this->wp->AllParamsSet();
-        $this->wp->Criterion[1] = $this->wp->Operation(opEqual, "P_ROLE_ID", $this->wp->GetDBValue("1"), $this->ToSQL($this->wp->GetDBValue("1"), ccsFloat),false);
-        $this->wp->Criterion[2] = $this->wp->Operation(opEqual, "P_APPLICATION_ID", $this->wp->GetDBValue("2"), $this->ToSQL($this->wp->GetDBValue("2"), ccsFloat),false);
-        $this->Where = $this->wp->opAND(
-             false, 
-             $this->wp->Criterion[1], 
-             $this->wp->Criterion[2]);
     }
 //End Prepare Method
 
-//Open Method @141-BBE53310
+//Open Method @141-8D6124CE
     function Open()
     {
         $this->CCSEventResult = CCGetEvent($this->CCSEvents, "BeforeBuildSelect", $this->Parent);
-        $this->CountSQL = "SELECT COUNT(*)\n\n" .
-        "FROM V_P_ROLE_MENU";
-        $this->SQL = "SELECT * \n\n" .
-        "FROM V_P_ROLE_MENU {SQL_Where} {SQL_OrderBy}";
+        $this->CountSQL = "SELECT COUNT(*) FROM (SELECT * \n" .
+        "FROM v_p_role_menu\n" .
+        "WHERE \"p_role_id\" = " . $this->SQLValue($this->wp->GetDBValue("1"), ccsFloat) . "\n" .
+        "AND \"p_application_id\" = " . $this->SQLValue($this->wp->GetDBValue("2"), ccsFloat) . " ) cnt";
+        $this->SQL = "SELECT * \n" .
+        "FROM v_p_role_menu\n" .
+        "WHERE \"p_role_id\" = " . $this->SQLValue($this->wp->GetDBValue("1"), ccsFloat) . "\n" .
+        "AND \"p_application_id\" = " . $this->SQLValue($this->wp->GetDBValue("2"), ccsFloat) . " ";
         $this->CCSEventResult = CCGetEvent($this->CCSEvents, "BeforeExecuteSelect", $this->Parent);
         if ($this->CountSQL) 
             $this->RecordsCount = CCGetDBValue(CCBuildSQL($this->CountSQL, $this->Where, ""), $this);
@@ -677,40 +674,37 @@ class clsP_ROLMENGridDataSource extends clsDBConn {  //P_ROLMENGridDataSource Cl
     }
 //End Open Method
 
-//SetValues Method @141-77C776E3
+//SetValues Method @141-52B9317D
     function SetValues()
     {
         $this->CachedColumns["P_ROLE_MENU_ID"] = $this->f("P_ROLE_MENU_ID");
-        $this->P_MENU_ID->SetDBValue(trim($this->f("P_MENU_ID")));
-        $this->CREATION_DATE->SetDBValue(trim($this->f("CREATION_DATE")));
-        $this->CREATED_BY->SetDBValue($this->f("CREATED_BY"));
-        $this->P_ROLE_ID->SetDBValue(trim($this->f("P_ROLE_ID")));
-        $this->P_ROLE_MENU_ID->SetDBValue(trim($this->f("P_ROLE_MENU_ID")));
+        $this->P_MENU_ID->SetDBValue(trim($this->f("p_menu_id")));
+        $this->CREATION_DATE->SetDBValue(trim($this->f("creation_date")));
+        $this->CREATED_BY->SetDBValue($this->f("created_by"));
+        $this->P_ROLE_ID->SetDBValue(trim($this->f("p_role_id")));
+        $this->P_ROLE_MENU_ID->SetDBValue(trim($this->f("p_role_menu_id")));
     }
 //End SetValues Method
 
-//Insert Method @141-5328EA42
+//Insert Method @141-9CD221B8
     function Insert()
     {
         global $CCSLocales;
         global $DefaultDateFormat;
         $this->CmdExecution = true;
-        $this->cp["I_ROLE_ID"] = new clsSQLParameter("ctrlP_ROLE_ID", ccsFloat, "", "", $this->P_ROLE_ID->GetValue(true), "", false, $this->ErrorBlock);
-        $this->cp["I_MENU_ID"] = new clsSQLParameter("ctrlP_MENU_ID", ccsFloat, "", "", $this->P_MENU_ID->GetValue(true), "", false, $this->ErrorBlock);
-        $this->cp["I_USER"] = new clsSQLParameter("sesUserName", ccsText, "", "", CCGetSession("UserName", NULL), "", false, $this->ErrorBlock);
+        $this->cp["P_ROLE_ID"] = new clsSQLParameter("ctrlP_ROLE_ID", ccsFloat, "", "", $this->P_ROLE_ID->GetValue(true), 0, false, $this->ErrorBlock);
+        $this->cp["P_MENU_ID"] = new clsSQLParameter("ctrlP_MENU_ID", ccsFloat, "", "", $this->P_MENU_ID->GetValue(true), "", false, $this->ErrorBlock);
+        $this->cp["USER_NAME"] = new clsSQLParameter("sesUserName", ccsText, "", "", CCGetSession("UserName", NULL), "", false, $this->ErrorBlock);
         $this->CCSEventResult = CCGetEvent($this->CCSEvents, "BeforeBuildInsert", $this->Parent);
-        if (!is_null($this->cp["I_ROLE_ID"]->GetValue()) and !strlen($this->cp["I_ROLE_ID"]->GetText()) and !is_bool($this->cp["I_ROLE_ID"]->GetValue())) 
-            $this->cp["I_ROLE_ID"]->SetValue($this->P_ROLE_ID->GetValue(true));
-        if (!is_null($this->cp["I_MENU_ID"]->GetValue()) and !strlen($this->cp["I_MENU_ID"]->GetText()) and !is_bool($this->cp["I_MENU_ID"]->GetValue())) 
-            $this->cp["I_MENU_ID"]->SetValue($this->P_MENU_ID->GetValue(true));
-        if (!is_null($this->cp["I_USER"]->GetValue()) and !strlen($this->cp["I_USER"]->GetText()) and !is_bool($this->cp["I_USER"]->GetValue())) 
-            $this->cp["I_USER"]->SetValue(CCGetSession("UserName", NULL));
-        $this->SQL = "BEGIN PACK_ROLE_MENU.ADD_ROLE_MENU (" . ":I_ROLE_ID" . ", "
-             . ":I_MENU_ID" . ", "
-             . ":I_USER" . "); END;";
-        $this->bind("I_ROLE_ID", $this->cp["I_ROLE_ID"]->DBValue, 002);
-        $this->bind("I_MENU_ID", $this->cp["I_MENU_ID"]->DBValue, 002);
-        $this->bind("I_USER", $this->cp["I_USER"]->DBValue, 2000);
+        if (!is_null($this->cp["P_ROLE_ID"]->GetValue()) and !strlen($this->cp["P_ROLE_ID"]->GetText()) and !is_bool($this->cp["P_ROLE_ID"]->GetValue())) 
+            $this->cp["P_ROLE_ID"]->SetValue($this->P_ROLE_ID->GetValue(true));
+        if (!strlen($this->cp["P_ROLE_ID"]->GetText()) and !is_bool($this->cp["P_ROLE_ID"]->GetValue(true))) 
+            $this->cp["P_ROLE_ID"]->SetText(0);
+        if (!is_null($this->cp["P_MENU_ID"]->GetValue()) and !strlen($this->cp["P_MENU_ID"]->GetText()) and !is_bool($this->cp["P_MENU_ID"]->GetValue())) 
+            $this->cp["P_MENU_ID"]->SetValue($this->P_MENU_ID->GetValue(true));
+        if (!is_null($this->cp["USER_NAME"]->GetValue()) and !strlen($this->cp["USER_NAME"]->GetText()) and !is_bool($this->cp["USER_NAME"]->GetValue())) 
+            $this->cp["USER_NAME"]->SetValue(CCGetSession("UserName", NULL));
+        $this->SQL = "SELECT ifl.f_add_role_menu(" . $this->SQLValue($this->cp["P_ROLE_ID"]->GetDBValue(), ccsFloat) . "," . $this->SQLValue($this->cp["P_MENU_ID"]->GetDBValue(), ccsFloat) . ",'" . $this->SQLValue($this->cp["USER_NAME"]->GetDBValue(), ccsText) . "')";
         $this->CCSEventResult = CCGetEvent($this->CCSEvents, "BeforeExecuteInsert", $this->Parent);
         if($this->Errors->Count() == 0 && $this->CmdExecution) {
             $this->query($this->SQL);
@@ -719,18 +713,17 @@ class clsP_ROLMENGridDataSource extends clsDBConn {  //P_ROLMENGridDataSource Cl
     }
 //End Insert Method
 
-//Delete Method @141-4974BE52
+//Delete Method @141-5E1A5E71
     function Delete()
     {
         global $CCSLocales;
         global $DefaultDateFormat;
         $this->CmdExecution = true;
-        $this->cp["I_ROLE_MENU_ID"] = new clsSQLParameter("ctrlP_ROLE_MENU_ID", ccsFloat, "", "", $this->P_ROLE_MENU_ID->GetValue(true), "", false, $this->ErrorBlock);
+        $this->cp["P_ROLE_MENU_ID"] = new clsSQLParameter("ctrlP_ROLE_MENU_ID", ccsText, "", "", $this->P_ROLE_MENU_ID->GetValue(true), "", false, $this->ErrorBlock);
         $this->CCSEventResult = CCGetEvent($this->CCSEvents, "BeforeBuildDelete", $this->Parent);
-        if (!is_null($this->cp["I_ROLE_MENU_ID"]->GetValue()) and !strlen($this->cp["I_ROLE_MENU_ID"]->GetText()) and !is_bool($this->cp["I_ROLE_MENU_ID"]->GetValue())) 
-            $this->cp["I_ROLE_MENU_ID"]->SetValue($this->P_ROLE_MENU_ID->GetValue(true));
-        $this->SQL = "BEGIN PACK_ROLE_MENU.DEL_ROLE_MENU (" . ":I_ROLE_MENU_ID" . "); END;";
-        $this->bind("I_ROLE_MENU_ID", $this->cp["I_ROLE_MENU_ID"]->DBValue, 002);
+        if (!is_null($this->cp["P_ROLE_MENU_ID"]->GetValue()) and !strlen($this->cp["P_ROLE_MENU_ID"]->GetText()) and !is_bool($this->cp["P_ROLE_MENU_ID"]->GetValue())) 
+            $this->cp["P_ROLE_MENU_ID"]->SetValue($this->P_ROLE_MENU_ID->GetValue(true));
+        $this->SQL = "SELECT ifl.f_del_role_menu(" . $this->SQLValue($this->cp["P_ROLE_MENU_ID"]->GetDBValue(), ccsText) . ")";
         $this->CCSEventResult = CCGetEvent($this->CCSEvents, "BeforeExecuteDelete", $this->Parent);
         if($this->Errors->Count() == 0 && $this->CmdExecution) {
             $this->query($this->SQL);

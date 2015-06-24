@@ -50,11 +50,13 @@ $dbConn = new clsDBConn();
 	$dbConn->query($queryApp);
 	$dbConn->next_record();
 	$appCode = $dbConn->f("code");
-	$query = "SELECT p_menu_id p_menu_id, NVL (parent_id, 0) parent_id, menu, path_file_name, description "
+	$query = " select p_menu_id, parent_id, menu, file_name as path_file_name,  description 
+                from ifl.f_display_menu_tree (".$_GET["P_APPLICATION_ID"].")";
+ 	/*$query = "SELECT p_menu_id p_menu_id, NVL (parent_id, 0) parent_id, menu, path_file_name, description "
 		. "FROM (SELECT   p_menu_id, parent_id, code menu, NVL (file_name, '0') path_file_name, description, "
 		. "listing_no FROM p_menu WHERE p_application_id = ".$_GET["P_APPLICATION_ID"]." "
 		. "ORDER BY NVL (parent_id, 0), listing_no) x START WITH x.parent_id IS NULL "
-		. "CONNECT BY PRIOR x.p_menu_id = x.parent_id ORDER SIBLINGS BY NVL (listing_no, 9999)";
+		. "CONNECT BY PRIOR x.p_menu_id = x.parent_id ORDER SIBLINGS BY NVL (listing_no, 9999)";*/
 	$dbConn->query($query);
 ?>
     <table height="100%" cellspacing="0" width="100%" border="0">

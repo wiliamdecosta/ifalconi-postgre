@@ -41,11 +41,11 @@ WHERE &quot;p_application_role_id&quot; = {P_APPLICATION_ROLE_ID} ">
 			</TableParameters>
 			<SPParameters/>
 			<SQLParameters>
-<SQLParameter id="142" parameterType="URL" variable="P_APPLICATION_ROLE_ID" dataType="Float" parameterSource="P_APPLICATION_ROLE_ID" defaultValue="0"/>
-</SQLParameters>
+				<SQLParameter id="142" parameterType="URL" variable="P_APPLICATION_ROLE_ID" dataType="Float" parameterSource="P_APPLICATION_ROLE_ID" defaultValue="0"/>
+			</SQLParameters>
 			<JoinTables>
 				<JoinTable id="139" tableName="V_P_APPLICATION_ROLE" posWidth="160" posHeight="168" posLeft="10" posTop="10"/>
-</JoinTables>
+			</JoinTables>
 			<JoinLinks/>
 			<Fields/>
 			<ISPParameters/>
@@ -85,7 +85,9 @@ WHERE &quot;p_application_role_id&quot; = {P_APPLICATION_ROLE_ID} ">
 		</Label>
 		<EditableGrid id="105" urlType="Relative" secured="False" emptyRows="1" allowInsert="True" allowUpdate="True" allowDelete="True" validateData="True" preserveParameters="GET" sourceType="SQL" defaultPageSize="15" returnValueType="Number" returnValueTypeForDelete="Number" returnValueTypeForInsert="Number" returnValueTypeForUpdate="Number" connection="Conn" dataSource="SELECT * 
 FROM &quot;p_application_role&quot;
-WHERE &quot;p_role_id&quot; = {P_ROLE_ID} " name="P_APPROLEGrid" pageSizeLimit="100" wizardCaption=" P APPLICATION ROLE " wizardGridType="Tabular" wizardAltRecord="False" wizardRecordSeparator="False" wizardNoRecords="-" PathID="P_APPROLEGrid" deleteControl="CheckBox_Delete" pasteAsReplace="pasteAsReplace" pasteActions="pasteActions" customInsert="INSERT INTO P_APPLICATION_ROLE(P_APPLICATION_ROLE_ID, P_ROLE_ID, P_APPLICATION_ID, CREATION_DATE, CREATED_BY) VALUES(generate_id('','P_APPLICATION_ROLE','P_APPLICATION_ROLE_ID'), {P_ROLE_ID}, {P_APPLICATION_ID}, sysdate, '{CREATED_BY}')" customInsertType="SQL" parameterTypeListName="ParameterTypeList" activeCollection="SQLParameters" customDeleteType="SQL" customDelete="DELETE FROM P_APPLICATION_ROLE WHERE  P_APPLICATION_ROLE_ID = {P_APPLICATION_ROLE_ID}" customUpdateType="SQL" customUpdate="UPDATE P_APPLICATION_ROLE SET P_APPLICATION_ID={P_APPLICATION_ID} WHERE  P_APPLICATION_ROLE_ID = {P_APPLICATION_ROLE_ID}" activeTableType="P_APPLICATION_ROLE">
+WHERE &quot;p_role_id&quot; = {P_ROLE_ID} " name="P_APPROLEGrid" pageSizeLimit="100" wizardCaption=" P APPLICATION ROLE " wizardGridType="Tabular" wizardAltRecord="False" wizardRecordSeparator="False" wizardNoRecords="-" PathID="P_APPROLEGrid" deleteControl="CheckBox_Delete" pasteAsReplace="pasteAsReplace" pasteActions="pasteActions" customInsert="INSERT INTO p_application_role(p_application_role_id, p_role_id, p_application_id, creation_date, created_by) 
+VALUES(generate_id('ifl','p_application_role','p_application_role_id'), {p_role_id}, {p_application_id}, current_date, '{created_by}')" customInsertType="SQL" parameterTypeListName="CustomTableParameterTypeList" activeCollection="ISQLParameters" customDeleteType="SQL" customDelete="DELETE FROM p_application_role WHERE p_application_role_id = {p_application_role_id}" customUpdateType="SQL" customUpdate="UPDATE p_application_role SET p_application_id = {p_application_id} 
+WHERE  p_application_role_id = {p_application_role_id}" activeTableType="P_APPLICATION_ROLE">
 			<Components>
 				<ListBox id="109" visible="Yes" fieldSourceType="DBColumn" sourceType="SQL" dataType="Float" returnValueType="Number" name="P_APPLICATION_ID" fieldSource="p_application_id" required="False" caption="P APPLICATION ID" wizardCaption="P APPLICATION ID" wizardSize="12" wizardMaxLength="12" wizardIsPassword="False" wizardUseTemplateBlock="False" PathID="P_APPROLEGridP_APPLICATION_ID" connection="Conn" dataSource="SELECT * 
 FROM p_application" boundColumn="p_application_id" textColumn="code">
@@ -95,8 +97,8 @@ FROM p_application" boundColumn="p_application_id" textColumn="code">
 					<SPParameters/>
 					<SQLParameters/>
 					<JoinTables>
-<JoinTable id="141" tableName="P_APPLICATION" posLeft="10" posTop="10" posWidth="127" posHeight="180"/>
-</JoinTables>
+						<JoinTable id="141" tableName="P_APPLICATION" posLeft="10" posTop="10" posWidth="127" posHeight="180"/>
+					</JoinTables>
 					<JoinLinks/>
 					<Fields/>
 					<Attributes/>
@@ -151,7 +153,7 @@ FROM p_application" boundColumn="p_application_id" textColumn="code">
 					<Attributes/>
 					<Features/>
 				</Hidden>
-				<Hidden id="108" fieldSourceType="DBColumn" dataType="Float" name="P_ROLE_ID" fieldSource="p_role_id" required="True" caption="P ROLE ID" wizardCaption="P ROLE ID" wizardSize="12" wizardMaxLength="12" wizardIsPassword="False" wizardUseTemplateBlock="False" PathID="P_APPROLEGridP_ROLE_ID" defaultValue="{res:Text1}">
+				<Hidden id="108" fieldSourceType="DBColumn" dataType="Float" name="P_ROLE_ID" fieldSource="p_role_id" required="True" caption="P ROLE ID" wizardCaption="P ROLE ID" wizardSize="12" wizardMaxLength="12" wizardIsPassword="False" wizardUseTemplateBlock="False" PathID="P_APPROLEGridP_ROLE_ID" defaultValue="CCGetFromGet(&quot;P_ROLE_ID&quot;, NULL)">
 					<Components/>
 					<Events/>
 					<Attributes/>
@@ -197,10 +199,10 @@ FROM p_application" boundColumn="p_application_id" textColumn="code">
 			</TableParameters>
 			<SPParameters/>
 			<SQLParameters>
-<SQLParameter id="140" parameterType="URL" variable="P_ROLE_ID" dataType="Float" parameterSource="P_ROLE_ID" defaultValue="0"/>
-</SQLParameters>
+				<SQLParameter id="140" parameterType="URL" variable="P_ROLE_ID" dataType="Float" parameterSource="P_ROLE_ID" defaultValue="0"/>
+			</SQLParameters>
 			<JoinTables>
-				<JoinTable id="128" tableName="P_APPLICATION_ROLE" posLeft="10" posTop="10" posWidth="160" posHeight="136"/>
+				<JoinTable id="128" tableName="P_APPLICATION_ROLE" posWidth="160" posHeight="136" posLeft="10" posTop="10"/>
 			</JoinTables>
 			<JoinLinks/>
 			<Fields/>
@@ -209,19 +211,19 @@ FROM p_application" boundColumn="p_application_id" textColumn="code">
 			</PKFields>
 			<ISPParameters/>
 			<ISQLParameters>
-				<SQLParameter id="123" variable="P_APPLICATION_ID" parameterType="Control" defaultValue="0" dataType="Float" parameterSource="P_APPLICATION_ID"/>
-				<SQLParameter id="124" variable="P_ROLE_ID" parameterType="Control" defaultValue="0" dataType="Float" parameterSource="P_ROLE_ID"/>
-				<SQLParameter id="125" variable="CREATED_BY" parameterType="Session" dataType="Text" parameterSource="UserName"/>
+				<SQLParameter id="123" variable="p_application_id" parameterType="Control" defaultValue="0" dataType="Float" parameterSource="P_APPLICATION_ID"/>
+				<SQLParameter id="124" variable="p_role_id" parameterType="Control" defaultValue="0" dataType="Float" parameterSource="P_ROLE_ID"/>
+				<SQLParameter id="125" variable="created_by" parameterType="Session" dataType="Text" parameterSource="UserName"/>
 			</ISQLParameters>
 			<IFormElements>
-				<CustomParameter id="120" field="P_APPLICATION_ID" dataType="Float" parameterType="Control" parameterSource="P_APPLICATION_ID"/>
-				<CustomParameter id="121" field="P_APPLICATION_ROLE_ID" dataType="Float" parameterType="Control" parameterSource="P_APPLICATION_ROLE_ID"/>
-				<CustomParameter id="122" field="P_ROLE_ID" dataType="Float" parameterType="Control" parameterSource="P_ROLE_ID"/>
-			</IFormElements>
+				<CustomParameter id="143" field="p_application_id" dataType="Float" parameterType="Control" parameterSource="P_APPLICATION_ID"/>
+<CustomParameter id="144" field="p_application_role_id" dataType="Float" parameterType="Control" parameterSource="P_APPLICATION_ROLE_ID"/>
+<CustomParameter id="145" field="p_role_id" dataType="Float" parameterType="Control" parameterSource="P_ROLE_ID"/>
+</IFormElements>
 			<USPParameters/>
 			<USQLParameters>
-				<SQLParameter id="135" variable="P_APPLICATION_ID" dataType="Float" parameterType="Control" parameterSource="P_APPLICATION_ID"/>
-				<SQLParameter id="136" variable="P_APPLICATION_ROLE_ID" parameterType="Control" dataType="Float" parameterSource="P_APPLICATION_ROLE_ID" defaultValue="0"/>
+				<SQLParameter id="135" variable="p_application_id" dataType="Float" parameterType="Control" parameterSource="P_APPLICATION_ID" defaultValue="0"/>
+				<SQLParameter id="136" variable="p_application_role_id" parameterType="Control" dataType="Float" parameterSource="P_APPLICATION_ROLE_ID" defaultValue="0"/>
 			</USQLParameters>
 			<UConditions>
 				<TableParameter id="134" conditionType="Parameter" useIsNull="False" field="P_APPLICATION_ROLE_ID" dataType="Float" searchConditionType="Equal" parameterType="Control" logicOperator="And" parameterSource="P_APPLICATION_ROLE_ID"/>
@@ -231,7 +233,7 @@ FROM p_application" boundColumn="p_application_id" textColumn="code">
 			</UFormElements>
 			<DSPParameters/>
 			<DSQLParameters>
-				<SQLParameter id="126" variable="P_APPLICATION_ROLE_ID" parameterType="Control" defaultValue="0" dataType="Float" parameterSource="P_APPLICATION_ROLE_ID"/>
+				<SQLParameter id="126" variable="p_application_role_id" parameterType="Control" defaultValue="0" dataType="Float" parameterSource="P_APPLICATION_ROLE_ID"/>
 			</DSQLParameters>
 			<DConditions/>
 			<SecurityGroups/>

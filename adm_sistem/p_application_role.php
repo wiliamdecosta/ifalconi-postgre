@@ -748,7 +748,7 @@ class clsEditableGridP_APPROLEGrid { //P_APPROLEGrid Class @105-AE374D8D
     }
 //End GetFormState Method
 
-//Show Method @105-10310CA0
+//Show Method @105-34E50FF4
     function Show()
     {
         global $Tpl;
@@ -827,7 +827,7 @@ class clsEditableGridP_APPROLEGrid { //P_APPROLEGrid Class @105-AE374D8D
                     $this->CachedColumns["P_APPLICATION_ROLE_ID"][$this->RowNumber] = "";
                     $this->P_APPLICATION_ID->SetText("");
                     $this->P_APPLICATION_ROLE_ID->SetText("");
-                    $this->P_ROLE_ID->SetText($CCSLocales->GetText("Text1"));
+                    $this->P_ROLE_ID->SetText(CCGetFromGet("P_ROLE_ID", NULL));
                     $this->rowStyle->SetText("");
                     $this->CREATED_BY->SetText("");
                     $this->CREATION_DATE->SetText("");
@@ -1032,27 +1032,28 @@ class clsP_APPROLEGridDataSource extends clsDBConn {  //P_APPROLEGridDataSource 
     }
 //End SetValues Method
 
-//Insert Method @105-24564488
+//Insert Method @105-EF1562C9
     function Insert()
     {
         global $CCSLocales;
         global $DefaultDateFormat;
         $this->CmdExecution = true;
-        $this->cp["P_APPLICATION_ID"] = new clsSQLParameter("ctrlP_APPLICATION_ID", ccsFloat, "", "", $this->P_APPLICATION_ID->GetValue(true), 0, false, $this->ErrorBlock);
-        $this->cp["P_ROLE_ID"] = new clsSQLParameter("ctrlP_ROLE_ID", ccsFloat, "", "", $this->P_ROLE_ID->GetValue(true), 0, false, $this->ErrorBlock);
-        $this->cp["CREATED_BY"] = new clsSQLParameter("sesUserName", ccsText, "", "", CCGetSession("UserName", NULL), "", false, $this->ErrorBlock);
+        $this->cp["p_application_id"] = new clsSQLParameter("ctrlP_APPLICATION_ID", ccsFloat, "", "", $this->P_APPLICATION_ID->GetValue(true), 0, false, $this->ErrorBlock);
+        $this->cp["p_role_id"] = new clsSQLParameter("ctrlP_ROLE_ID", ccsFloat, "", "", $this->P_ROLE_ID->GetValue(true), 0, false, $this->ErrorBlock);
+        $this->cp["created_by"] = new clsSQLParameter("sesUserName", ccsText, "", "", CCGetSession("UserName", NULL), "", false, $this->ErrorBlock);
         $this->CCSEventResult = CCGetEvent($this->CCSEvents, "BeforeBuildInsert", $this->Parent);
-        if (!is_null($this->cp["P_APPLICATION_ID"]->GetValue()) and !strlen($this->cp["P_APPLICATION_ID"]->GetText()) and !is_bool($this->cp["P_APPLICATION_ID"]->GetValue())) 
-            $this->cp["P_APPLICATION_ID"]->SetValue($this->P_APPLICATION_ID->GetValue(true));
-        if (!strlen($this->cp["P_APPLICATION_ID"]->GetText()) and !is_bool($this->cp["P_APPLICATION_ID"]->GetValue(true))) 
-            $this->cp["P_APPLICATION_ID"]->SetText(0);
-        if (!is_null($this->cp["P_ROLE_ID"]->GetValue()) and !strlen($this->cp["P_ROLE_ID"]->GetText()) and !is_bool($this->cp["P_ROLE_ID"]->GetValue())) 
-            $this->cp["P_ROLE_ID"]->SetValue($this->P_ROLE_ID->GetValue(true));
-        if (!strlen($this->cp["P_ROLE_ID"]->GetText()) and !is_bool($this->cp["P_ROLE_ID"]->GetValue(true))) 
-            $this->cp["P_ROLE_ID"]->SetText(0);
-        if (!is_null($this->cp["CREATED_BY"]->GetValue()) and !strlen($this->cp["CREATED_BY"]->GetText()) and !is_bool($this->cp["CREATED_BY"]->GetValue())) 
-            $this->cp["CREATED_BY"]->SetValue(CCGetSession("UserName", NULL));
-        $this->SQL = "INSERT INTO P_APPLICATION_ROLE(P_APPLICATION_ROLE_ID, P_ROLE_ID, P_APPLICATION_ID, CREATION_DATE, CREATED_BY) VALUES(generate_id('','P_APPLICATION_ROLE','P_APPLICATION_ROLE_ID'), " . $this->SQLValue($this->cp["P_ROLE_ID"]->GetDBValue(), ccsFloat) . ", " . $this->SQLValue($this->cp["P_APPLICATION_ID"]->GetDBValue(), ccsFloat) . ", sysdate, '" . $this->SQLValue($this->cp["CREATED_BY"]->GetDBValue(), ccsText) . "')";
+        if (!is_null($this->cp["p_application_id"]->GetValue()) and !strlen($this->cp["p_application_id"]->GetText()) and !is_bool($this->cp["p_application_id"]->GetValue())) 
+            $this->cp["p_application_id"]->SetValue($this->P_APPLICATION_ID->GetValue(true));
+        if (!strlen($this->cp["p_application_id"]->GetText()) and !is_bool($this->cp["p_application_id"]->GetValue(true))) 
+            $this->cp["p_application_id"]->SetText(0);
+        if (!is_null($this->cp["p_role_id"]->GetValue()) and !strlen($this->cp["p_role_id"]->GetText()) and !is_bool($this->cp["p_role_id"]->GetValue())) 
+            $this->cp["p_role_id"]->SetValue($this->P_ROLE_ID->GetValue(true));
+        if (!strlen($this->cp["p_role_id"]->GetText()) and !is_bool($this->cp["p_role_id"]->GetValue(true))) 
+            $this->cp["p_role_id"]->SetText(0);
+        if (!is_null($this->cp["created_by"]->GetValue()) and !strlen($this->cp["created_by"]->GetText()) and !is_bool($this->cp["created_by"]->GetValue())) 
+            $this->cp["created_by"]->SetValue(CCGetSession("UserName", NULL));
+        $this->SQL = "INSERT INTO p_application_role(p_application_role_id, p_role_id, p_application_id, creation_date, created_by) \n" .
+        "VALUES(generate_id('ifl','p_application_role','p_application_role_id'), " . $this->SQLValue($this->cp["p_role_id"]->GetDBValue(), ccsFloat) . ", " . $this->SQLValue($this->cp["p_application_id"]->GetDBValue(), ccsFloat) . ", current_date, '" . $this->SQLValue($this->cp["created_by"]->GetDBValue(), ccsText) . "')";
         $this->CCSEventResult = CCGetEvent($this->CCSEvents, "BeforeExecuteInsert", $this->Parent);
         if($this->Errors->Count() == 0 && $this->CmdExecution) {
             $this->query($this->SQL);
@@ -1061,22 +1062,25 @@ class clsP_APPROLEGridDataSource extends clsDBConn {  //P_APPROLEGridDataSource 
     }
 //End Insert Method
 
-//Update Method @105-4843F1A7
+//Update Method @105-023554BE
     function Update()
     {
         global $CCSLocales;
         global $DefaultDateFormat;
         $this->CmdExecution = true;
-        $this->cp["P_APPLICATION_ID"] = new clsSQLParameter("ctrlP_APPLICATION_ID", ccsFloat, "", "", $this->P_APPLICATION_ID->GetValue(true), "", false, $this->ErrorBlock);
-        $this->cp["P_APPLICATION_ROLE_ID"] = new clsSQLParameter("ctrlP_APPLICATION_ROLE_ID", ccsFloat, "", "", $this->P_APPLICATION_ROLE_ID->GetValue(true), 0, false, $this->ErrorBlock);
+        $this->cp["p_application_id"] = new clsSQLParameter("ctrlP_APPLICATION_ID", ccsFloat, "", "", $this->P_APPLICATION_ID->GetValue(true), 0, false, $this->ErrorBlock);
+        $this->cp["p_application_role_id"] = new clsSQLParameter("ctrlP_APPLICATION_ROLE_ID", ccsFloat, "", "", $this->P_APPLICATION_ROLE_ID->GetValue(true), 0, false, $this->ErrorBlock);
         $this->CCSEventResult = CCGetEvent($this->CCSEvents, "BeforeBuildUpdate", $this->Parent);
-        if (!is_null($this->cp["P_APPLICATION_ID"]->GetValue()) and !strlen($this->cp["P_APPLICATION_ID"]->GetText()) and !is_bool($this->cp["P_APPLICATION_ID"]->GetValue())) 
-            $this->cp["P_APPLICATION_ID"]->SetValue($this->P_APPLICATION_ID->GetValue(true));
-        if (!is_null($this->cp["P_APPLICATION_ROLE_ID"]->GetValue()) and !strlen($this->cp["P_APPLICATION_ROLE_ID"]->GetText()) and !is_bool($this->cp["P_APPLICATION_ROLE_ID"]->GetValue())) 
-            $this->cp["P_APPLICATION_ROLE_ID"]->SetValue($this->P_APPLICATION_ROLE_ID->GetValue(true));
-        if (!strlen($this->cp["P_APPLICATION_ROLE_ID"]->GetText()) and !is_bool($this->cp["P_APPLICATION_ROLE_ID"]->GetValue(true))) 
-            $this->cp["P_APPLICATION_ROLE_ID"]->SetText(0);
-        $this->SQL = "UPDATE P_APPLICATION_ROLE SET P_APPLICATION_ID=" . $this->SQLValue($this->cp["P_APPLICATION_ID"]->GetDBValue(), ccsFloat) . " WHERE  P_APPLICATION_ROLE_ID = " . $this->SQLValue($this->cp["P_APPLICATION_ROLE_ID"]->GetDBValue(), ccsFloat) . "";
+        if (!is_null($this->cp["p_application_id"]->GetValue()) and !strlen($this->cp["p_application_id"]->GetText()) and !is_bool($this->cp["p_application_id"]->GetValue())) 
+            $this->cp["p_application_id"]->SetValue($this->P_APPLICATION_ID->GetValue(true));
+        if (!strlen($this->cp["p_application_id"]->GetText()) and !is_bool($this->cp["p_application_id"]->GetValue(true))) 
+            $this->cp["p_application_id"]->SetText(0);
+        if (!is_null($this->cp["p_application_role_id"]->GetValue()) and !strlen($this->cp["p_application_role_id"]->GetText()) and !is_bool($this->cp["p_application_role_id"]->GetValue())) 
+            $this->cp["p_application_role_id"]->SetValue($this->P_APPLICATION_ROLE_ID->GetValue(true));
+        if (!strlen($this->cp["p_application_role_id"]->GetText()) and !is_bool($this->cp["p_application_role_id"]->GetValue(true))) 
+            $this->cp["p_application_role_id"]->SetText(0);
+        $this->SQL = "UPDATE p_application_role SET p_application_id = " . $this->SQLValue($this->cp["p_application_id"]->GetDBValue(), ccsFloat) . " \n" .
+        "WHERE  p_application_role_id = " . $this->SQLValue($this->cp["p_application_role_id"]->GetDBValue(), ccsFloat) . "";
         $this->CCSEventResult = CCGetEvent($this->CCSEvents, "BeforeExecuteUpdate", $this->Parent);
         if($this->Errors->Count() == 0 && $this->CmdExecution) {
             $this->query($this->SQL);
@@ -1085,19 +1089,19 @@ class clsP_APPROLEGridDataSource extends clsDBConn {  //P_APPROLEGridDataSource 
     }
 //End Update Method
 
-//Delete Method @105-20F4492D
+//Delete Method @105-4DCE5373
     function Delete()
     {
         global $CCSLocales;
         global $DefaultDateFormat;
         $this->CmdExecution = true;
-        $this->cp["P_APPLICATION_ROLE_ID"] = new clsSQLParameter("ctrlP_APPLICATION_ROLE_ID", ccsFloat, "", "", $this->P_APPLICATION_ROLE_ID->GetValue(true), 0, false, $this->ErrorBlock);
+        $this->cp["p_application_role_id"] = new clsSQLParameter("ctrlP_APPLICATION_ROLE_ID", ccsFloat, "", "", $this->P_APPLICATION_ROLE_ID->GetValue(true), 0, false, $this->ErrorBlock);
         $this->CCSEventResult = CCGetEvent($this->CCSEvents, "BeforeBuildDelete", $this->Parent);
-        if (!is_null($this->cp["P_APPLICATION_ROLE_ID"]->GetValue()) and !strlen($this->cp["P_APPLICATION_ROLE_ID"]->GetText()) and !is_bool($this->cp["P_APPLICATION_ROLE_ID"]->GetValue())) 
-            $this->cp["P_APPLICATION_ROLE_ID"]->SetValue($this->P_APPLICATION_ROLE_ID->GetValue(true));
-        if (!strlen($this->cp["P_APPLICATION_ROLE_ID"]->GetText()) and !is_bool($this->cp["P_APPLICATION_ROLE_ID"]->GetValue(true))) 
-            $this->cp["P_APPLICATION_ROLE_ID"]->SetText(0);
-        $this->SQL = "DELETE FROM P_APPLICATION_ROLE WHERE  P_APPLICATION_ROLE_ID = " . $this->SQLValue($this->cp["P_APPLICATION_ROLE_ID"]->GetDBValue(), ccsFloat) . "";
+        if (!is_null($this->cp["p_application_role_id"]->GetValue()) and !strlen($this->cp["p_application_role_id"]->GetText()) and !is_bool($this->cp["p_application_role_id"]->GetValue())) 
+            $this->cp["p_application_role_id"]->SetValue($this->P_APPLICATION_ROLE_ID->GetValue(true));
+        if (!strlen($this->cp["p_application_role_id"]->GetText()) and !is_bool($this->cp["p_application_role_id"]->GetValue(true))) 
+            $this->cp["p_application_role_id"]->SetText(0);
+        $this->SQL = "DELETE FROM p_application_role WHERE p_application_role_id = " . $this->SQLValue($this->cp["p_application_role_id"]->GetDBValue(), ccsFloat) . "";
         $this->CCSEventResult = CCGetEvent($this->CCSEvents, "BeforeExecuteDelete", $this->Parent);
         if($this->Errors->Count() == 0 && $this->CmdExecution) {
             $this->query($this->SQL);

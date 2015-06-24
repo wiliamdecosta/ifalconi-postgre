@@ -1,12 +1,12 @@
-<Page id="1" templateExtension="html" relativePath=".." fullRelativePath=".\admin" secured="False" urlType="Relative" isIncluded="False" SSLAccess="False" isService="False" cachingEnabled="False" validateRequest="True" cachingDuration="1 minutes" wizardTheme="sikm" wizardThemeVersion="3.0" pasteActions="pasteActions" needGeneration="0">
+<Page id="1" templateExtension="html" relativePath=".." fullRelativePath=".\adm_sistem" secured="False" urlType="Relative" isIncluded="False" SSLAccess="False" isService="False" cachingEnabled="False" validateRequest="True" cachingDuration="1 minutes" wizardTheme="sikm" wizardThemeVersion="3.0" pasteActions="pasteActions" needGeneration="0">
 	<Components>
 		<Grid id="101" secured="False" sourceType="SQL" returnValueType="Number" defaultPageSize="5" connection="Conn" activeCollection="SQLParameters" parameterTypeListName="ParameterTypeList" resultSetType="parameter" dataSource="SELECT * 
-FROM P_MENU
-WHERE P_APPLICATION_ID = {P_APPLICATION_ID}
-AND NVL(PARENT_ID,0) = {PARENT_ID} 
-ORDER BY NVL(LISTING_NO,999)" name="P_MENUGrid" pageSizeLimit="100" wizardCaption="List of Grid1 " wizardGridType="Tabular" wizardSortingType="SimpleDir" wizardAllowInsert="False" wizardAltRecord="False" wizardAltRecordType="Style" wizardRecordSeparator="False" wizardNoRecords="No records" pasteAsReplace="pasteAsReplace" pasteActions="pasteActions">
+FROM p_menu
+WHERE p_application_id = {P_APPLICATION_ID}
+AND coalesce(parent_id,0) = {PARENT_ID} 
+ORDER BY coalesce(listing_no,999)" name="P_MENUGrid" pageSizeLimit="100" wizardCaption="List of Grid1 " wizardGridType="Tabular" wizardSortingType="SimpleDir" wizardAllowInsert="False" wizardAltRecord="False" wizardAltRecordType="Style" wizardRecordSeparator="False" wizardNoRecords="No records" pasteAsReplace="pasteAsReplace" pasteActions="pasteActions">
 			<Components>
-				<Label id="106" fieldSourceType="DBColumn" dataType="Text" html="False" name="CODE" fieldSource="CODE" wizardCaption="O RC DATA" wizardSize="50" wizardMaxLength="250" wizardIsPassword="False" wizardUseTemplateBlock="False" wizardAddNbsp="True" PathID="P_MENUGridCODE">
+				<Label id="106" fieldSourceType="DBColumn" dataType="Text" html="False" name="CODE" fieldSource="code" wizardCaption="O RC DATA" wizardSize="50" wizardMaxLength="250" wizardIsPassword="False" wizardUseTemplateBlock="False" wizardAddNbsp="True" PathID="P_MENUGridCODE">
 					<Components/>
 					<Events/>
 					<Attributes/>
@@ -24,13 +24,13 @@ ORDER BY NVL(LISTING_NO,999)" name="P_MENUGrid" pageSizeLimit="100" wizardCaptio
 					<Attributes/>
 					<Features/>
 				</Navigator>
-				<Label id="108" fieldSourceType="DBColumn" dataType="Text" html="False" name="IS_ACTIVE_CODE" PathID="P_MENUGridIS_ACTIVE_CODE" fieldSource="IS_ACTIVE">
+				<Label id="108" fieldSourceType="DBColumn" dataType="Text" html="False" name="IS_ACTIVE_CODE" PathID="P_MENUGridIS_ACTIVE_CODE" fieldSource="is_active">
 					<Components/>
 					<Events/>
 					<Attributes/>
 					<Features/>
 				</Label>
-				<Label id="110" fieldSourceType="DBColumn" dataType="Text" html="False" name="FILE_NAME" PathID="P_MENUGridFILE_NAME" fieldSource="FILE_NAME">
+				<Label id="110" fieldSourceType="DBColumn" dataType="Text" html="False" name="FILE_NAME" PathID="P_MENUGridFILE_NAME" fieldSource="file_name">
 					<Components/>
 					<Events/>
 					<Attributes/>
@@ -40,7 +40,7 @@ ORDER BY NVL(LISTING_NO,999)" name="P_MENUGrid" pageSizeLimit="100" wizardCaptio
 					<Components/>
 					<Events/>
 					<LinkParameters>
-						<LinkParameter id="369" sourceType="DataField" name="P_MENU_ID" source="P_MENU_ID"/>
+						<LinkParameter id="369" sourceType="DataField" name="P_MENU_ID" source="p_menu_id"/>
 					</LinkParameters>
 					<Attributes/>
 					<Features/>
@@ -55,7 +55,7 @@ ORDER BY NVL(LISTING_NO,999)" name="P_MENUGrid" pageSizeLimit="100" wizardCaptio
 					<Attributes/>
 					<Features/>
 				</Link>
-				<Hidden id="109" fieldSourceType="DBColumn" dataType="Text" name="P_MENU_ID" PathID="P_MENUGridP_MENU_ID" fieldSource="P_MENU_ID" visible="Yes">
+				<Hidden id="109" fieldSourceType="DBColumn" dataType="Text" name="P_MENU_ID" PathID="P_MENUGridP_MENU_ID" fieldSource="p_menu_id" visible="Yes">
 					<Components/>
 					<Events/>
 					<Attributes/>
@@ -91,26 +91,33 @@ ORDER BY NVL(LISTING_NO,999)" name="P_MENUGrid" pageSizeLimit="100" wizardCaptio
 			<Attributes/>
 			<Features/>
 		</Grid>
-		<Record id="252" sourceType="Table" urlType="Relative" secured="False" allowInsert="True" allowUpdate="True" allowDelete="True" validateData="True" preserveParameters="GET" returnValueType="Number" returnValueTypeForDelete="Number" returnValueTypeForInsert="Number" returnValueTypeForUpdate="Number" connection="Conn" name="P_MENUForm" errorSummator="Error" wizardCaption="Add/Edit P App Menu " wizardFormMethod="post" PathID="P_MENUForm" activeCollection="DSQLParameters" pasteAsReplace="pasteAsReplace" pasteActions="pasteActions" customInsertType="SQL" customInsert="INSERT INTO P_MENU(P_MENU_ID, P_APPLICATION_ID, CODE, PARENT_ID, FILE_NAME, LISTING_NO, IS_ACTIVE, DESCRIPTION, CREATED_BY, CREATION_DATE, UPDATED_BY, UPDATED_DATE) VALUES
-(GENERATE_ID('','P_MENU','P_MENU_ID'), 
+		<Record id="252" sourceType="SQL" urlType="Relative" secured="False" allowInsert="True" allowUpdate="True" allowDelete="True" validateData="True" preserveParameters="GET" returnValueType="Number" returnValueTypeForDelete="Number" returnValueTypeForInsert="Number" returnValueTypeForUpdate="Number" connection="Conn" name="P_MENUForm" errorSummator="Error" wizardCaption="Add/Edit P App Menu " wizardFormMethod="post" PathID="P_MENUForm" activeCollection="SQLParameters" pasteAsReplace="pasteAsReplace" pasteActions="pasteActions" customInsertType="SQL" customInsert="INSERT INTO p_menu(p_menu_id, p_application_id, code, parent_id, file_name, listing_no, is_active, description, created_by, creation_date, updated_by, updated_date) 
+VALUES
+(generate_id('ifl','p_menu','p_menu_id'), 
 {P_APPLICATION_ID}, 
-UPPER(TRIM('{CODE}')), 
-DECODE({PARENT_ID},0,NULL,{PARENT_ID}),
-TRIM('{FILE_NAME}'), 
+upper(trim('{CODE}')), 
+(CASE({PARENT_ID})
+	WHEN 0 THEN null
+	ELSE {PARENT_ID}
+END),
+trim('{FILE_NAME}'), 
 {LISTING_NO}, 
 '{IS_ACTIVE}', 
-TRIM('{DESCRIPTION}'), 
-'{CREATED_BY}', sysdate, 
-'{UPDATED_BY}', sysdate
-)" parameterTypeListName="ParameterTypeList" customDeleteType="SQL" customDelete="DELETE FROM P_MENU WHERE P_MENU_ID = {P_MENU_ID}" customUpdateType="SQL" customUpdate="UPDATE P_MENU SET  
-CODE=UPPER(TRIM('{CODE}')), 
-FILE_NAME=LOWER(TRIM('{FILE_NAME}')), 
-LISTING_NO={LISTING_NO}, 
-IS_ACTIVE='{IS_ACTIVE}', 
-DESCRIPTION=TRIM('{DESCRIPTION}'), 
-UPDATED_BY='{UPDATED_BY}', 
-UPDATED_DATE= sysdate 
-WHERE P_MENU_ID = {P_MENU_ID}" dataSource="P_MENU">
+trim('{DESCRIPTION}'), 
+'{CREATED_BY}', current_date, 
+'{UPDATED_BY}', current_date
+)" parameterTypeListName="ParameterTypeList" customDeleteType="SQL" customDelete="DELETE FROM p_menu WHERE p_menu_id = {P_MENU_ID}
+OR parent_id = {P_MENU_ID}" customUpdateType="SQL" customUpdate="UPDATE p_menu SET  
+code = upper(trim('{CODE}')), 
+file_name = lower(trim('{FILE_NAME}')), 
+listing_no = {LISTING_NO}, 
+is_active = '{IS_ACTIVE}', 
+description = trim('{DESCRIPTION}'), 
+updated_by = '{UPDATED_BY}', 
+updated_date= current_date 
+WHERE p_menu_id = {P_MENU_ID}" dataSource="SELECT * 
+FROM p_menu
+WHERE p_menu_id = {P_MENU_ID} ">
 			<Components>
 				<Button id="253" urlType="Relative" enableValidation="True" isDefault="False" name="Button_Insert" operation="Insert" wizardCaption="Add" PathID="P_MENUFormButton_Insert" removeParameters="FLAG">
 					<Components/>
@@ -144,31 +151,31 @@ WHERE P_MENU_ID = {P_MENU_ID}" dataSource="P_MENU">
 					<Attributes/>
 					<Features/>
 				</Button>
-				<TextBox id="260" visible="Yes" fieldSourceType="DBColumn" dataType="Text" name="CODE" fieldSource="CODE" required="True" caption="Nama Menu" wizardCaption="CODE" wizardSize="50" wizardMaxLength="250" wizardIsPassword="False" wizardUseTemplateBlock="False" PathID="P_MENUFormCODE">
+				<TextBox id="260" visible="Yes" fieldSourceType="DBColumn" dataType="Text" name="CODE" fieldSource="code" required="True" caption="Nama Menu" wizardCaption="CODE" wizardSize="50" wizardMaxLength="250" wizardIsPassword="False" wizardUseTemplateBlock="False" PathID="P_MENUFormCODE">
 					<Components/>
 					<Events/>
 					<Attributes/>
 					<Features/>
 				</TextBox>
-				<TextBox id="261" visible="Yes" fieldSourceType="DBColumn" dataType="Float" name="PARENT_ID" fieldSource="PARENT_ID" required="False" caption="PARENT ID" wizardCaption="PARENT ID" wizardSize="12" wizardMaxLength="12" wizardIsPassword="False" wizardUseTemplateBlock="False" PathID="P_MENUFormPARENT_ID" defaultValue="0">
+				<TextBox id="261" visible="Yes" fieldSourceType="DBColumn" dataType="Float" name="PARENT_ID" fieldSource="parent_id" required="False" caption="PARENT ID" wizardCaption="PARENT ID" wizardSize="12" wizardMaxLength="12" wizardIsPassword="False" wizardUseTemplateBlock="False" PathID="P_MENUFormPARENT_ID" defaultValue="0">
 					<Components/>
 					<Events/>
 					<Attributes/>
 					<Features/>
 				</TextBox>
-				<TextBox id="262" visible="Yes" fieldSourceType="DBColumn" dataType="Text" name="FILE_NAME" fieldSource="FILE_NAME" required="False" caption="FILE NAME" wizardCaption="FILE NAME" wizardSize="50" wizardMaxLength="250" wizardIsPassword="False" wizardUseTemplateBlock="False" PathID="P_MENUFormFILE_NAME">
+				<TextBox id="262" visible="Yes" fieldSourceType="DBColumn" dataType="Text" name="FILE_NAME" fieldSource="file_name" required="False" caption="FILE NAME" wizardCaption="FILE NAME" wizardSize="50" wizardMaxLength="250" wizardIsPassword="False" wizardUseTemplateBlock="False" PathID="P_MENUFormFILE_NAME">
 					<Components/>
 					<Events/>
 					<Attributes/>
 					<Features/>
 				</TextBox>
-				<TextBox id="263" visible="Yes" fieldSourceType="DBColumn" dataType="Float" name="LISTING_NO" fieldSource="LISTING_NO" required="False" caption="LISTING NO" wizardCaption="LISTING NO" wizardSize="12" wizardMaxLength="12" wizardIsPassword="False" wizardUseTemplateBlock="False" PathID="P_MENUFormLISTING_NO">
+				<TextBox id="263" visible="Yes" fieldSourceType="DBColumn" dataType="Float" name="LISTING_NO" fieldSource="listing_no" required="False" caption="LISTING NO" wizardCaption="LISTING NO" wizardSize="12" wizardMaxLength="12" wizardIsPassword="False" wizardUseTemplateBlock="False" PathID="P_MENUFormLISTING_NO">
 					<Components/>
 					<Events/>
 					<Attributes/>
 					<Features/>
 				</TextBox>
-				<ListBox id="264" visible="Yes" fieldSourceType="DBColumn" dataType="Text" name="IS_ACTIVE" fieldSource="IS_ACTIVE" required="True" caption="Aktif?" wizardCaption="IS ACTIVE" wizardSize="1" wizardMaxLength="1" wizardIsPassword="False" wizardUseTemplateBlock="False" PathID="P_MENUFormIS_ACTIVE" sourceType="ListOfValues" _valueOfList="N" _nameOfList="TIDAK" dataSource="Y;YA;N;TIDAK">
+				<ListBox id="264" visible="Yes" fieldSourceType="DBColumn" dataType="Text" name="IS_ACTIVE" fieldSource="is_active" required="True" caption="Aktif?" wizardCaption="IS ACTIVE" wizardSize="1" wizardMaxLength="1" wizardIsPassword="False" wizardUseTemplateBlock="False" PathID="P_MENUFormIS_ACTIVE" sourceType="ListOfValues" _valueOfList="N" _nameOfList="TIDAK" dataSource="Y;YA;N;TIDAK">
 					<Components/>
 					<Events/>
 					<Attributes/>
@@ -180,43 +187,43 @@ WHERE P_MENU_ID = {P_MENU_ID}" dataSource="P_MENU">
 					<JoinLinks/>
 					<Fields/>
 				</ListBox>
-				<TextArea id="265" visible="Yes" fieldSourceType="DBColumn" dataType="Text" name="DESCRIPTION" fieldSource="DESCRIPTION" required="False" caption="DESCRIPTION" wizardCaption="DESCRIPTION" wizardSize="50" wizardMaxLength="250" wizardIsPassword="False" wizardUseTemplateBlock="False" PathID="P_MENUFormDESCRIPTION">
+				<TextArea id="265" visible="Yes" fieldSourceType="DBColumn" dataType="Text" name="DESCRIPTION" fieldSource="description" required="False" caption="DESCRIPTION" wizardCaption="DESCRIPTION" wizardSize="50" wizardMaxLength="250" wizardIsPassword="False" wizardUseTemplateBlock="False" PathID="P_MENUFormDESCRIPTION">
 					<Components/>
 					<Events/>
 					<Attributes/>
 					<Features/>
 				</TextArea>
-				<TextBox id="268" visible="Yes" fieldSourceType="DBColumn" dataType="Text" name="CREATED_BY" fieldSource="CREATED_BY" required="False" caption="CREATED BY" wizardCaption="CREATED BY" wizardSize="12" wizardMaxLength="12" wizardIsPassword="False" wizardUseTemplateBlock="False" PathID="P_MENUFormCREATED_BY" defaultValue="CCGetUserLogin()">
+				<TextBox id="268" visible="Yes" fieldSourceType="DBColumn" dataType="Text" name="CREATED_BY" fieldSource="created_by" required="False" caption="CREATED BY" wizardCaption="CREATED BY" wizardSize="12" wizardMaxLength="12" wizardIsPassword="False" wizardUseTemplateBlock="False" PathID="P_MENUFormCREATED_BY" defaultValue="CCGetUserLogin()">
 					<Components/>
 					<Events/>
 					<Attributes/>
 					<Features/>
 				</TextBox>
-				<TextBox id="266" visible="Yes" fieldSourceType="DBColumn" dataType="Date" name="CREATION_DATE" fieldSource="CREATION_DATE" required="False" caption="CREATION DATE" wizardCaption="CREATION DATE" wizardSize="8" wizardMaxLength="100" wizardIsPassword="False" wizardUseTemplateBlock="False" PathID="P_MENUFormCREATION_DATE" format="dd-mmm-yyyy" defaultValue="CurrentDate">
+				<TextBox id="266" visible="Yes" fieldSourceType="DBColumn" dataType="Date" name="CREATION_DATE" fieldSource="creation_date" required="False" caption="CREATION DATE" wizardCaption="CREATION DATE" wizardSize="8" wizardMaxLength="100" wizardIsPassword="False" wizardUseTemplateBlock="False" PathID="P_MENUFormCREATION_DATE" format="dd-mmm-yyyy" defaultValue="CurrentDate">
 					<Components/>
 					<Events/>
 					<Attributes/>
 					<Features/>
 				</TextBox>
-				<TextBox id="271" visible="Yes" fieldSourceType="DBColumn" dataType="Text" name="UPDATED_BY" fieldSource="UPDATED_BY" required="False" caption="UPDATED BY" wizardCaption="UPDATED BY" wizardSize="12" wizardMaxLength="12" wizardIsPassword="False" wizardUseTemplateBlock="False" PathID="P_MENUFormUPDATED_BY" defaultValue="CCGetUserLogin()">
+				<TextBox id="271" visible="Yes" fieldSourceType="DBColumn" dataType="Text" name="UPDATED_BY" fieldSource="updated_by" required="False" caption="UPDATED BY" wizardCaption="UPDATED BY" wizardSize="12" wizardMaxLength="12" wizardIsPassword="False" wizardUseTemplateBlock="False" PathID="P_MENUFormUPDATED_BY" defaultValue="CCGetUserLogin()">
 					<Components/>
 					<Events/>
 					<Attributes/>
 					<Features/>
 				</TextBox>
-				<TextBox id="269" visible="Yes" fieldSourceType="DBColumn" dataType="Date" name="UPDATED_DATE" fieldSource="UPDATED_DATE" required="False" caption="UPDATED DATE" wizardCaption="UPDATED DATE" wizardSize="8" wizardMaxLength="100" wizardIsPassword="False" wizardUseTemplateBlock="False" PathID="P_MENUFormUPDATED_DATE" format="dd-mmm-yyyy" defaultValue="CurrentDate">
+				<TextBox id="269" visible="Yes" fieldSourceType="DBColumn" dataType="Date" name="UPDATED_DATE" fieldSource="updated_date" required="False" caption="UPDATED DATE" wizardCaption="UPDATED DATE" wizardSize="8" wizardMaxLength="100" wizardIsPassword="False" wizardUseTemplateBlock="False" PathID="P_MENUFormUPDATED_DATE" format="dd-mmm-yyyy" defaultValue="CurrentDate">
 					<Components/>
 					<Events/>
 					<Attributes/>
 					<Features/>
 				</TextBox>
-				<TextBox id="259" visible="Yes" fieldSourceType="DBColumn" dataType="Float" name="P_APPLICATION_ID" fieldSource="P_APPLICATION_ID" required="False" caption="P APPLICATION ID" wizardCaption="P APPLICATION ID" wizardSize="12" wizardMaxLength="12" wizardIsPassword="False" wizardUseTemplateBlock="False" PathID="P_MENUFormP_APPLICATION_ID">
+				<TextBox id="259" visible="Yes" fieldSourceType="DBColumn" dataType="Float" name="P_APPLICATION_ID" fieldSource="p_application_id" required="False" caption="P APPLICATION ID" wizardCaption="P APPLICATION ID" wizardSize="12" wizardMaxLength="12" wizardIsPassword="False" wizardUseTemplateBlock="False" PathID="P_MENUFormP_APPLICATION_ID">
 					<Components/>
 					<Events/>
 					<Attributes/>
 					<Features/>
 				</TextBox>
-				<Hidden id="350" fieldSourceType="DBColumn" dataType="Text" name="P_MENU_ID" PathID="P_MENUFormP_MENU_ID" fieldSource="P_MENU_ID">
+				<Hidden id="350" fieldSourceType="DBColumn" dataType="Text" name="P_MENU_ID" PathID="P_MENUFormP_MENU_ID" fieldSource="p_menu_id">
 					<Components/>
 					<Events/>
 					<Attributes/>
@@ -226,14 +233,13 @@ WHERE P_MENU_ID = {P_MENU_ID}" dataSource="P_MENU">
 			<Events>
 			</Events>
 			<TableParameters>
-				<TableParameter id="258" conditionType="Parameter" useIsNull="True" field="P_MENU_ID" dataType="Float" logicOperator="And" searchConditionType="Equal" parameterType="URL" orderNumber="1" defaultValue="SELECTED_ID" parameterSource="P_MENU_ID"/>
+				<TableParameter id="258" conditionType="Parameter" useIsNull="True" field="p_menu_id" dataType="Float" logicOperator="And" searchConditionType="Equal" parameterType="URL" orderNumber="1" defaultValue="SELECTED_ID" parameterSource="P_MENU_ID"/>
 			</TableParameters>
 			<SPParameters/>
 			<SQLParameters>
-				<SQLParameter id="377" parameterType="URL" variable="P_APP_MENU_ID" dataType="Float" parameterSource="P_APP_MENU_ID" defaultValue="0"/>
+				<SQLParameter id="393" parameterType="URL" variable="P_MENU_ID" dataType="Float" parameterSource="P_MENU_ID" defaultValue="0"/>
 			</SQLParameters>
 			<JoinTables>
-				<JoinTable id="388" tableName="P_MENU" posLeft="10" posTop="10" posWidth="146" posHeight="180"/>
 			</JoinTables>
 			<JoinLinks/>
 			<Fields/>
