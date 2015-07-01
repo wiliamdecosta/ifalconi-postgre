@@ -55,9 +55,9 @@ class payment_controller extends wbController{
 					'jsonItems' => '');
 			
             $ws_data = self::getResultData($ws_client, $params);
-            if($ws_data['data'] == null) {
+            /*if($ws_data['data'] == null) {
                 throw new Exception($ws_data['message']);
-            }
+            }*/
             
             $data['rows']       = $ws_data ['data'];
             $data['total']      = $ws_data ['total'];
