@@ -264,11 +264,11 @@ class clsModulGridDataSource extends clsDBConn {  //ModulGridDataSource Class @2
         $dbConn__->close();
 
 		if ($isadmin==1) {
-			  $this->SQL = "select aa.p_application_id, aa.code, aa.description, 1 is_on, aa.md_on " .
+			  $this->SQL = "select aa.p_application_id, aa.code, aa.description, is_on, aa.md_on " .
 							 "from v_display_app(1,0.0) aa ";
 		} else {             
 
-			  $this->SQL = "select aa.p_application_id, aa.code, aa.description, 1 is_on, aa.md_on " .
+			  $this->SQL = "select aa.p_application_id, aa.code, aa.description, is_on, aa.md_on " .
 							 "from v_display_app(0," . ccgetuserid() . " ) aa "; 
 		}             
 
